@@ -24,31 +24,20 @@ module.exports.templateTags = [
 		}
 	],
 	
-    async run (context , datatype  ) {
+    run (context , datatype  ) {
 		
 		switch (datatype) {
-			case 'AdressenInNederland':
-				return AdressenInNederland();
-			case 'IBAN':
-				return IBAN() ;
-			case 'LorumIpsum10':
-				return LorumIpsum(10);
-			case 'LorumIpsum25':
-				return LorumIpsum(25);
-			case 'LorumIpsum255':
-				return LorumIpsum(255);
-			case 'Name':
-				return Name();
-			case 'PlaatsenInNederland':
-				return PlaatsenInNederland();
-			case 'PostcodesInNederland':
-				return PostcodesInNederland();
-			case 'UnicodeCities':
-				return UnicodeCities();
-			default:
-				return 'Error - incorrect, or non-existing value  selected ';
+			case 'AdressenInNederland':  return AdressenInNederland();
+			case 'IBAN':                 return IBAN() ;
+			case 'LorumIpsum10':         return LorumIpsum(10);
+			case 'LorumIpsum25':         return LorumIpsum(25);
+			case 'LorumIpsum255':        return LorumIpsum(255);
+			case 'Name':                 return Name();
+			case 'PlaatsenInNederland':  return PlaatsenInNederland();
+			case 'PostcodesInNederland': return PostcodesInNederland();
+			case 'UnicodeCities':        return UnicodeCities();
+			default:                     return 'Error - incorrect, or non-existing value  selected ';
 		}
-	  return IBAN() ;
     }
 
 }];
@@ -101,7 +90,7 @@ return CC + CN + BC + DIGITS ;
 }
 
 
-function UnicodeCities(maxLength) {
+function UnicodeCities() {
     Cities= ['København'
             , 'Göteborg','Umeå','Gävle'
             , 'רושלים','תל אביב'  ,'אילת'
@@ -254,7 +243,7 @@ function firstName(){
 
 function surName(){
   var LN = ['Twain','Dickens','Shakespear','Orwell','Vance','Baldwin','Wells','Asimov'
-           ,'Poe','Dostojevski','Tolstoj','Poeskin','Böll','Kafka','Solzhenitsyn'
+           ,'Poe','Tolstoj','Poeskin','Böll','Kafka','Solzhenitsyn'
            ,'Campert','Tjechov','Eco','de Winter','Kurzweil'];
   return  LN[Math.floor( LN.length * Math.random ())] ;
 }
