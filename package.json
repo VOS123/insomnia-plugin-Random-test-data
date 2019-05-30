@@ -1,0 +1,22 @@
+{
+  "name": "RandomTestData",
+   "description": "Generate random test data",
+   "version": "1.0",
+   "main": "index.js",
+   "insomnia": {
+    "name": "RandomTestData",  
+    "description": "Generate  random test data"
+  },
+  
+   "dependencies": [],
+   "devDependencies": [],
+   "keywords": [
+    "insomnia",
+    "IBAN",
+    "plugin",
+    "plugins",
+    "random",
+    "test data",
+    "generator"
+  ]
+}
