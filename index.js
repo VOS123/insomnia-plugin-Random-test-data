@@ -368,7 +368,7 @@ function CorperateLorumIpsum (maxlength)  {
   var thema = NounsPlural[Math.floor(Math.random() * NounsPlural.length )];	
   var Continue = true ;
   while ( Continue  ) {
-      var Sentence = Adjective[Math.floor(Math.random() * Adjective.length )].capitalize() + 
+      var Sentence = capatalize(Adjective[Math.floor(Math.random() * Adjective.length )]) + 
                      Space +
                      thema   + 
                      Space +
@@ -394,7 +394,7 @@ function CorperateLorumIpsum (maxlength)  {
                      '. ';
       Continue = ((LorumIpsum.length + Sentence.length + 1 ) <= maxlength );
       if (Continue)  {
-        Sentence += LinkingFirstWord[Math.floor(Math.random() * LinkingFirstWord.length )].capitalize() +
+        Sentence += capatalize(LinkingFirstWord[Math.floor(Math.random() * LinkingFirstWord.length )]) +
                     Space +
                     Adjective[Math.floor(Math.random() * Adjective.length )] +
                     Space +
@@ -416,7 +416,7 @@ function CorperateLorumIpsum (maxlength)  {
       }
       Continue = ((LorumIpsum.length + Sentence.length + 1 ) <= maxlength );
       if (Continue)  {
-        Sentence += LinkingSecondWord[Math.floor(Math.random() * LinkingFirstWord.length )].capitalize() +
+        Sentence += capatalize(LinkingSecondWord[Math.floor(Math.random() * LinkingFirstWord.length )]) +
                     Space +
                     Adjective[Math.floor(Math.random() * Adjective.length )] +
                     Space +
@@ -436,6 +436,11 @@ function CorperateLorumIpsum (maxlength)  {
 }
 
 
+function capatalize(str){
+  const lower = str.toLowerCase() 
+  return  str.charAt(0).toUpperCase() 
+      + lower.slice(1) 
+}
 
 
 function Scramble (type, maxlength)  {
