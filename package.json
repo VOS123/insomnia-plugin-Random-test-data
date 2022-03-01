@@ -1,7 +1,7 @@
 {
   "name": "RandomTestData",
    "description": "Generate random test data",
-   "version": "1.0",
+   "version": "1.1",
    "main": "index.js",
    "insomnia": {
     "name": "RandomTestData",  
@@ -17,6 +17,7 @@
     "plugins",
     "random",
     "test data",
-    "generator"
+    "generator",
+	"lorum ipsum"
   ]
 }

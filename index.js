@@ -1,52 +1,173 @@
+
 module.exports.templateTags = [
 {
-	name: 'RandomTestData',    
-    displayName: 'Random test data',
-    description: 'Insert random test data',    
-    
-	args: [
+	  name: 'Adres',    
+    displayName: 'Random adressen in Nederland',
+    description: 'Creer willekeurige Nederlandse adressen.',        
+	  args: [
 		{
-			displayName: 'Choose type of test data',
+			displayName: 'Nederlands',
 			type: 'enum',
 			options: [
-				{displayName: 'Adres in Nederland', value: 'AdressenInNederland'},
-				{displayName: 'Name', value: 'Name'},
-				{displayName: 'IBAN', value: 'IBAN'},
-				{displayName: 'Lorum Ipsum 10', value: 'LorumIpsum10'},	
-				{displayName: 'Lorum Ipsum 25', value: 'LorumIpsum25'},
-				{displayName: 'Lorum Ipsum 255', value: 'LorumIpsum255'},
-				{displayName: 'Plaatsen in Nederland', value: 'PlaatsenInNederland'},
-				{displayName: 'Postcode in Nederland', value: 'PostcodesInNederland'},
-				{displayName: 'UnicodeCities', value: 'UnicodeCities'}
-				
-				
+				{displayName: 'Huisnummers',       value: 'HuisnummersInNederland'},
+				{displayName: 'Plaats',            value: 'PlaatsenInNederland'},
+				{displayName: 'Postcode',          value: 'PostcodesInNederland'},
+				{displayName: 'Straat',            value: 'StratenInNederland'},
+				{displayName: 'Straat huisnummer', value: 'AdressenInNederland'},
 			]
-		}
-	],
+		} ,    
+  ],
 	
-    run (context , datatype  ) {
+  run (context , datatype  ) {
 		
 		switch (datatype) {
-			case 'AdressenInNederland':  return AdressenInNederland();
-			case 'IBAN':                 return IBAN() ;
-			case 'LorumIpsum10':         return LorumIpsum(10);
-			case 'LorumIpsum25':         return LorumIpsum(25);
-			case 'LorumIpsum255':        return LorumIpsum(255);
-			case 'Name':                 return Name();
-			case 'PlaatsenInNederland':  return PlaatsenInNederland();
-			case 'PostcodesInNederland': return PostcodesInNederland();
-			case 'UnicodeCities':        return UnicodeCities();
-			default:                     return 'Error - incorrect, or non-existing value  selected ';
+			case 'HuisnummersInNederland': return HuisnummersInNederland();
+			case 'PlaatsenInNederland':    return PlaatsenInNederland();
+			case 'PostcodesInNederland':   return PostcodesInNederland();
+			case 'AdressenInNederland':    return AdressenInNederland('straat');
+			default:                       return 'Error - incorrect, or non-existing value selected ';
 		}
     }
 
-}];
+} ,
+
+{
+  name: 'IBAN',    
+  displayName: 'Random IBAN',
+  description: 'Creeer willekeurige IBAN nummers.',        
+  args: [
+  {
+    displayName: 'IBAN',
+    type: 'enum',
+    options: [
+      {displayName: 'Duitsland (DE)', value: 'IBANDE'},
+      {displayName: 'Nederland (NL)', value: 'IBANNL'},
+    ]
+  } ,
+ 
+],
+
+run (context , datatype  ) {
+  
+    switch (datatype) {
+      case 'IBANNL':  return IBAN('NL') ;
+      case 'IBANDE':  return IBAN('DE') ;
+      default:        return 'Error - incorrect, or non-existing value selected ';
+    }
+  }
+
+},
+
+{
+  name: 'RandomNumbers',    
+  displayName: 'Random numbers',
+  description: 'Creer willekeurige getallen.',        
+  args: [
+  {
+    displayName: 'Laagste',
+    type: 'number',
+	defaultValue: 1000000
+  } ,
+  {
+    displayName: 'Hoogste	',
+    type: 'number',
+	defaultValue: 19999999
+  } ,
+  
+],
+
+run (context , min , max  ) {
+ return Math.round(min + Math.random() * (max - min));
+}
+
+},
+
+	
+{
+  name: 'RandomTestText',    
+  displayName: 'Random text',
+  description: 'Creeer willekeurige teksten.',        
+  args: [
+  {
+    displayName: 'Soort',
+    type: 'enum',
+    options: [
+      {displayName: 'ABC scramble', value: 'ABCScramble'},	
+      {displayName: '123 scramble', value: '123Scramble'},	
+      {displayName: 'ABC123 scramble', value: 'ABC123Scramble'},	
+      {displayName: 'Lorum Ipsum', value: 'LorumIpsum'},	
+      {displayName: 'Lorum corperate', value: 'CorperateLorumIpsum'},
+    ]
+  } ,
+  {
+    displayName: 'Lengte',
+    type: 'enum',
+    options: [
+      {displayName: '10',  value: 10},	
+      {displayName: '25',  value: 25},
+      {displayName: '255', value: 255},
+      {displayName: '1000', value: 1000},
+    ]
+  } ,
+  
+],
+
+run (context , soort , lengte  ) {
+  
+  switch (soort) {
+    case 'ABCScramble':          return Scramble('ABC',lengte);
+    case '123Scramble':          return Scramble('123',lengte);
+    case 'ABC123Scramble':       return Scramble('ABC123',lengte);
+    case 'LorumIpsum':           return LorumIpsum(lengte);
+    case 'CorperateLorumIpsum':  return CorperateLorumIpsum(lengte);
+    default:                     return 'Error - incorrect, or non-existing value selected ';
+  }
+
+}
+
+},
+
+	
+	
+{
+  name: 'RandomUnicode',    
+  displayName: 'Random unicode items',
+  description: 'Unicode random data.',        
+  args: [
+  {
+    displayName: 'Unicode',
+    type: 'enum',
+    options: [
+      {displayName: 'City', value: 'UnicodeCity'},								
+    ]
+  } ,
+  
+],
+
+run (context , datatype  ) {
+  
+  switch (datatype) {
+    case 'UnicodeCity':        return RandomChooseItem('UnicodeCity');
+    default:                     return 'Error - incorrect, or non-existing value selected ';
+  }
+  }
+
+}
+
+];
 
 
 
-function IBAN (){
-var CC = 'NL';
-var BC = ['ABNA', 'AEGO', 'ASNB' , 'BNPA' , 'INGB' ];
+function IBAN (CC){
+var BC = [];
+
+BC = [];
+
+switch (CC) {
+  case 'DE': {BC = ['64090100','30120400','37040044' ]; break; }
+  case 'NL': {BC = ['ABNA', 'ABNA', 'ABNA', 'AEGO', 'ASNB' , 'BNPA' , 'INGB' , 'INGB' , 'INGB' , 'KABA', 'WEHY']; break; }
+}
+
 BC = BC[Math.floor(Math.random() * BC.length ) ];
 var elfsum,  DIGITS ;
 bNotOk = true;
@@ -90,25 +211,34 @@ return CC + CN + BC + DIGITS ;
 }
 
 
-function UnicodeCities() {
-    Cities= ['København'
-            , 'Göteborg','Umeå','Gävle'
-            , 'רושלים','תל אביב'  ,'אילת'
-            , 'Curaçao' 
-            ,'上海','北京',' 深圳','成都','广州','天津','海参崴'
-            ,'서울','부산','釜山','대구 광역시'
-            ,'北京' ,'京都市','大阪市','広島市','奈良市'
-            , 'Москва','Санкт-Петербург','Екатеринбург','Владивосток','Нижний Новгород'
-            , 'मुंबaī', 'mumbəi' ,'ಬೆಂಗಳೂರು','சென்னை'
-            , 'અમદાવાદ'
-            , 'الرباط','مراكش ','الدار البيضاء'
-            ];
+function RandomChooseItem(soort) {
+
+    switch ( soort) {
+      
+      case 'UnicodeCity': {
+        Items= ['København'
+        , 'Göteborg','Umeå','Gävle', 'רושלים','תל אביב'  ,'אילת'
+        , 'Curaçao' ,'上海','北京',' 深圳','成都','广州','天津','海参崴'
+        ,'서울','부산','釜山','대구 광역시','北京' ,'京都市','大阪市','広島市','奈良市'
+        , 'Москва','Санкт-Петербург','Екатеринбург','Владивосток','Нижний Новгород'
+        , 'मुंबaī', 'mumbəi' ,'ಬೆಂಗಳೂರು','சென்னை', 'અમદાવાદ', 'الرباط','مراكش ','الدار البيضاء'
+        ];
+      }
+      
+    }
     
-    
-    return Cities[Math.floor(Math.random() * Cities.length )] ;
+    return Items[Math.floor(Math.random() * Items.length )] ;
     
 }
 
+
+function Mobiel() {
+  min = 10000000;
+  max = 99999999;
+  prefix = '06-';
+  randomNumber = (Math.floor(Math.random() * (max - min)) + min);
+  return (prefix + randomNumber ).toString();
+}
 
 function PlaatsenInNederland () {
   Places = [ 'Aa en Hunze','Aalburg','Aalsmeer','Aalten','Achtkarspelen','Alblasserdam'      
@@ -157,8 +287,7 @@ function PlaatsenInNederland () {
             ,'Renswoude','Reusel-De Mierden','Rheden','Rhenen','Ridderkerk','Rijssen-Holten'
             ,'Rijswijk','Roerdalen','Roermond','De Ronde Venen','Roosendaal','Rotterdam'
             ,'Rozendaal','Rucphen','Schagen','Scherpenzeel','Schiedam','Schiermonnikoog'
-            ,'Schinnen','Schouwen-Duiveland','Simpelveld','Sint Anthonis','Sint-Michielsgestel'
-            ,'Sittard-Geleen'
+            ,'Schinnen','Schouwen-Duiveland','Simpelveld','Sint Anthonis','Sint-Michielsgestel','Sittard-Geleen'
             ,'Sliedrecht','Sluis','Smallingerland','Soest','Someren','Son en Breugel'
             ,'Stadskanaal','Staphorst','Stede Broec','Steenbergen','Steenwijkerland','Stein'
             ,'Stichtse Vecht','Strijen','Súdwest-Fryslân','Terneuzen','Terschelling','Texel'
@@ -178,6 +307,7 @@ function PlaatsenInNederland () {
           
       return Places[Math.floor(Math.random() * Places.length )] ;
 }
+
 
 
 function LorumIpsum (maxlength)  {
@@ -206,26 +336,174 @@ function LorumIpsum (maxlength)  {
       return LorumIpsum;
 }
 
+function CorperateLorumIpsum (maxlength)  {
 
-function AdressenInNederland (){
- var Names = ['Appelboom','Beukenboom','Berkenboom','Dennenboom','Iep','Eikenboom','Kastanjeboom'                 ,'Kersenboom','Perenboom', 'Wilg','Cypres','Ceder',
+  var LorumIpsum = '';
+  
+  const Adjective = ['agile','rich','existing','famous','fragile', 'fragile but promising','fragil but rich','great','great and thrustworthy','growing','powerful','powerful and rich','promising','reliable','responsible','strong','trustworty','weak','weak but promising'];           
+  const Space = ' '; 
+  const Comma = ', '; 
+  const LinkingEmphasis  = ['always','especially','always','clearly','never','occasionally','surely','without a doubt','without any doubt','often','obviously'];           
+  const LinkingAddition  = ['additionally','also','along with','besides','furthermore','together with','moreover'];           
+  const NounsPlural = ['advisers','employees','companies','coorperations', 'customers','directors','dictators','frameworks','goverments','managers','project leaders','resources','robots','solutions','stakeholders','strategies','suppliers','technologies'];           
+  NounsPlural.push ('3D printers','air defence systems','bots','pocket calculators','compilers','computers','desktops', 'factories','gadgets', 'high end solutions','integrated circuites','laptops','mobile phones','protocolls', 'printers','radios','robots','routers','televison stations','workstations', 'wifi connections');
+  NounsPlural.push ('accumlators','cookies','data cariers','firewalls','random data generators','radio transmitters','transponders','web servers','websites');
+  NounsPlural.push = ['agents','accountants','artificial intelligent robots','engineers','freaks','financial directors','geeks','hackers','nanobots','nerds','operators','sales managers','security officers','snipers','monkeys','terminators','zilots','zionists'];           
+  const VerbsAuxiliary = ['can','could','might','must','shall','should','will'];
+  const VerbsAction = ['assist','avoid','deny','betray','enclose','endure','ensure','empower','forget','help','introduce','improve','join', 'maximize','overtake','override','outsource','resist','translate','stimulate'];
+  const VerbsActionPrefix = ['always','in most cases','never','not','somethimes'];
+  const Gerund = ['assisting','avoiding','contributing','directing','enabling','engaging in','entering','ensuring','empowering','focusing on','forgetting','helping','improving','joining','outsourcing','podcasting','paying','praysing','resisting','thinking','trying'];
+  const GerundPrefix = ['and','and','and','and thereby', 'allow','when','without','whilst'];
+  const LinkingFirstWord = ['additionally','although','however,','therefor','moreover,','whereas','it is obvious that','one can only pray that']
+  const LinkingSecondWord = ['above all','nevertheless','despite','finally','first and foremost', 'having said that','on the other hand','subsequently','conversely','last but not least','unless']
+  LinkingSecondWord.push ('in such a case it should be obvious that', 'it should be noted that','in such a case it will be clear that' )
+  LinkingSecondWord.push ('by now it should be obvious that','lets all just hope it is obvious that','the more observant among us wil have noticed that')
+  const PunctuationMarks = []; 
+  for ( i = 1; i < 10; i++ ){ PunctuationMarks.push (' '); }
+  for ( i = 1; i < 10; i++ ){ PunctuationMarks.push (' and '); }
+  for ( i = 1; i < 10; i++ ){ PunctuationMarks.push (' & '); }
+  for ( i = 1; i < 10; i++ ){ PunctuationMarks.push (', '); }
+
+  var Continue = true ;
+  while ( Continue  ) {
+      var Sentence = Adjective[Math.floor(Math.random() * Adjective.length )].capitalize() + 
+                     Space +
+                     NounsPlural[Math.floor(Math.random() * NounsPlural.length )]   + 
+                     Space +
+                     VerbsAuxiliary[Math.floor(Math.random() * VerbsAuxiliary.length )]  +
+                     Space +
+                     LinkingEmphasis[Math.floor(Math.random() * LinkingEmphasis.length )]  +
+                     Space +
+                     VerbsAction[Math.floor(Math.random() * VerbsAction.length )] +
+                     Space +
+                     Adjective[Math.floor(Math.random() * Adjective.length )] +
+                     Space +
+                     NounsPlural[Math.floor(Math.random() * NounsPlural.length )] +
+                     Space ;
+		if ( Math.random() * 100 > 30 ) {
+		   Sentence += GerundPrefix[Math.floor(Math.random() * GerundPrefix.length )] + Space;
+		}
+        
+        Sentence +=  Gerund[Math.floor(Math.random() * VerbsAction.length )] +   
+                     Space +       
+                     Adjective[Math.floor(Math.random() * Adjective.length )] +   
+                     Space +
+                     NounsPlural[Math.floor(Math.random() * NounsPlural.length )] +   
+                     '. ';
+      Continue = ((LorumIpsum.length + Sentence.length + 1 ) <= maxlength );
+      if (Continue)  {
+        Sentence += LinkingFirstWord[Math.floor(Math.random() * LinkingFirstWord.length )].capitalize() +
+                    Space +
+                    Adjective[Math.floor(Math.random() * Adjective.length )] +
+                    Space +
+                    NounsPlural[Math.floor(Math.random() * NounsPlural.length )]  +
+                    Space ;
+		if ( Math.random() * 100 > 50 ) {
+		   Sentence += VerbsActionPrefix[Math.floor(Math.random() * VerbsActionPrefix.length )] + Space;
+		}
+        Sentence += VerbsAuxiliary[Math.floor(Math.random() * VerbsAuxiliary.length )]  +
+                    Space ;
+        Continue = ((LorumIpsum.length + Sentence.length + 1 ) <= maxlength );
+		if ( Math.random() * 100 > 50 && Continue) {
+		   Sentence += VerbsActionPrefix[Math.floor(Math.random() * VerbsActionPrefix.length )] + Space;
+		}
+        Sentence += VerbsAction[Math.floor(Math.random() * VerbsAction.length )]  +
+                    Space +
+                    NounsPlural[Math.floor(Math.random() * NounsPlural.length )]  +
+                   '. ';
+      }
+      Continue = ((LorumIpsum.length + Sentence.length + 1 ) <= maxlength );
+      if (Continue)  {
+        Sentence += LinkingSecondWord[Math.floor(Math.random() * LinkingFirstWord.length )].capitalize() +
+                    Space +
+                    Adjective[Math.floor(Math.random() * Adjective.length )] +
+                    Space +
+                    NounsPlural[Math.floor(Math.random() * NounsPlural.length )]  +
+                    Space +
+                    VerbsAuxiliary[Math.floor(Math.random() * VerbsAuxiliary.length )]  +
+                    Space +
+                    VerbsAction[Math.floor(Math.random() * VerbsAction.length )]  +
+                    Space +
+                    NounsPlural[Math.floor(Math.random() * NounsPlural.length )]  +
+                   '. ';
+      }
+      LorumIpsum += Sentence ;
+  }
+
+  return LorumIpsum;
+}
+
+
+
+
+function Scramble (type, maxlength)  {
+  var Scramble = '';
+  var Items = ''; 
+  switch ( type) {    
+    case 'ABC' : { Items = 'ABCDEFGHIJKLMNOPQRSTUVWXUZ' ; break;} 
+    case '123' : { Items = '0123456789' ; break;} 
+    case 'ABC123' : { Items = 'ABCDEFGHIJKLMNOPQRSTUVWXUZ0123456789' ; break;} 
+  }           
+  
+  while ( Scramble.length  < maxlength  ) {
+      Scramble += Items[Math.floor(Math.random() * Items.length )];
+  }
+  return Scramble;
+}
+
+function AdressenInNederland (Soort){
+ var Names = ['Appelboom','Beukenboom','Berkenboom','Dennenboom','Iep','Eikenboom','Kastanjeboom','Kersenboom','Perenboom', 'Wilg','Cypres','Ceder',
+              'Appelboom','Beukenboom','Berkenboom','Dennenboom','Iep','Eikenboom','Kastanjeboom','Kersenboom','Perenboom', 'Wilg','Cypres','Ceder',
+              'Appelboom','Beukenboom','Berkenboom','Dennenboom','Iep','Eikenboom','Kastanjeboom','Kersenboom','Perenboom', 'Wilg','Cypres','Ceder',
+              'Anjer', 'Margriet', 'Rozen','Sneeuwklokjes','Tulpen','Vergeetmeniet','Zonnenbloem',
+              'Anjer', 'Margriet', 'Rozen','Sneeuwklokjes','Tulpen','Vergeetmeniet','Zonnenbloem',
               'Anjer', 'Margriet', 'Rozen','Sneeuwklokjes','Tulpen','Vergeetmeniet','Zonnenbloem',
               'Jupiter', 'Mercurius','Maan', 'Mars', 'Saturnus', 'Uranus', 'Venus' , 'Zon',
-              'Einstein','Edison','Tesla','Newton','Celcius','Kelvin','Pasteur',
-              'Arieh Warshel ','Michael Levitt ','Daniel Shechtman ','Ada Yonath ',
-              'Aaron Ciechanover ','Avram Hershko ','Yitzchak Rabin ','Shimon Peres ',
-              'Menachem Begin','Sjmoeël Joseef Agnon'
+              'Jupiter', 'Mercurius','Maan', 'Mars', 'Saturnus', 'Uranus', 'Venus' , 'Zon',
+              'Jupiter', 'Mercurius','Maan', 'Mars', 'Saturnus', 'Uranus', 'Venus' , 'Zon',
+              'Einstein','Edison','Tesla','Newton','Celcius','Kelvin','Pasteur','Arieh Warshel ','Michael Levitt ','Daniel Shechtman ','Ada Yonath ',
+              'Aaron Ciechanover ','Avram Hershko ','Yitzchak Rabin ','Shimon Peres ','Menachem Begin','Sjmoeël Joseef Agnon',
+              'Gerard Aafjes','Carlos Aalbers','Gert Aandewiel','Patrick van Aanholt','Henny van der Aar','Kees Aarts','Christopher van der Aat',
+              'Martijn Abbenhues','Martin Abbenhuis','Yassine Abdellaoui','David Abdul','Liban Abdulahi','Dirk Abels','Gert Abma','Johan Abma',
+              'Anass Achahbar','Rochdi Achenteh','Eddy Achterberg','Giorgio Achterberg','John Achterberg','Elton Acolatse','Law Adam','Marcel Adam'
+              ,'Michel Adam','Michiel Adams','Johan Adang','Cor Adelaar','Frans Adelaar','Erik van Adelberg','Co Adriaanse','Dick Advocaat','Romeo van Aerde'
+              ,'Berry van Aerle','Jos van Aerts','Maikel Aerts','Ibrahim Afellay','Kemy Agustien','Achmed Ahahaoui','Alami Ahannach','Soufyan Ahannach','Bert Aipassa',
+              'Ismaïl Aissati','Nathan Aké','Joost van Aken','Marcel Akerboom','Jan van de Akker','Sofian Akouili','Fahd Aktaou','Furkan Alakmak','Tony Alberda',
+              'Suently Alberto','René Alberts','Quentin Albertus','Norbert Alblas','Roland Alberg','Suently Alberto','Rob Alflen','Shapoul Ali','Adnan Alisic','Mohammed Allach',
+              'Quincy Allée','Frans Alma','Pier Alma','Anmar Almubaraki','Marco van Alphen','Jim van Alst','Jeffrey Altheer','Samir Amari','Pelle van Amersfoort','Mawouna Amevor',
+              'Mustafa Amezrine','Carlo lAmi','Ahmed Ammi','Nordin Amrabat','Sofyan Amrabat','Zakaria Amrani','Wim Anderiesen','Djavan Anderson','Kenny Anderson','Aad Andriessen',
+              'Ype Anema','Henk Angenent','Vurnon Anita','Pelé van Anholt','Edwin van Ankeren','Jarchinio Antonia','Geraldo António','Rodney Antwi','Soufiane Aouragh','Mitch Apau',
+              'Bram Appel','Menno van Appelen','Henk den Arend','Berry Arends','Richard Arends','Yener Arıca','Ceylan Arikan','Willem van der Ark','Philippe van Arnhem','Peter Arntz',
+              'Sjoerd Ars','Masies Artien','Alfons Arts','Arno Arts','Jan Artz','Wouter Artz','Hans van Arum','Jeffrey van As','Deniz Aslan','Elroy Asmus','Oussama Assaidi','Abdes Assouiki',
+              'Kevin van Assouw','Maarten Atmodikoro','Raymond Atteveld','Adil Auassar','Pascal Averdijk','Berthil ter Avest','Hidde ter Avest','Patrick Ax','Yassin Ayoub','Yassine Azzagari',
+              'Stefan Aartsen','Carolyn Adel','Jasper Aerents','Robin van Aggele','Triin Aljand','Franziska van Almsick','Jopie van Alphen','Therese Alshammar','Irina Amsjennikova','Greta Andersen'
+              ,'Mayumi Aoki','Duncan Armstrong','Örn Arnarson','Eva Arndt','Isabelle Arnould','Pär Arvidsson','Alia Atkinson','Garnet Ault',
+              'Sade Daal','Alexander Dale Oen','Gijs Damen','José Damen','Eszter Dara','Tamás Darnyi','Uwe Daßler','Frédérik Deburghgraeve','Joseph De Combe',
+              'Brendon Dedekind','Gé Dekker','Inge Dekker','Lia Dekker','Ron Dekker','Dieter Dekoninck','Rick DeMont','Stijn Depypere','Gilles De Wilde','Stefan de Die',
+              'Nelson Diebel','Ines Diers','Edith van Dijk','Tom Dolan','Duje Draganja','Dion Dreesens','Elt Drenth','Nick Driebergen','Frank Drost','Johannes Drost','Monique Drost',
+              'Peter Drost','Fabienne Dufour','Jason Dunford','Matthew Dunn','Nate Dusing','Patrick Dybiona','Marjolein Delno','Caeleb Dressel'
               ];
  var Types = ['laan', 'plein', 'straat' , 'straat'];
 
  var Name = Names[Math.floor(Math.random() * Names.length )] ;
  var Type = Types[Math.floor(Math.random() * Types.length )] ;
- var Number = Math.round(Math.random() *  200,0);
  
- return Name + Type + ' ' + Number ;
- 
+ if (Soort == 'straat' ) {
+  return Name + Type  ;
+ } else {
+  var Number = Math.round(Math.random() *  200,0);
+  return Name + Type + ' ' + Number ;
+ } 
 }
 
+
+ function HuisnummersInNederland (){
+  
+  var Number = Math.round(Math.random() *  200,0);
+  return Number ;
+  
+ }
+ 
 
 function PostcodesInNederland (){
  var Number = 1000 + Math.round(Math.random() *  8000,0);
@@ -235,20 +513,29 @@ function PostcodesInNederland (){
 
 
 function firstName(){
-  var FN = ['Mark','Charles','Wiliam','George','Jack','James','H.C.','Isaac'
-           , 'Edgar Ellan' ,'Fjoder','Lev','Aleksander','Heinrich','Franz','Aleksandr'
-           , 'Remco','Anton','Umberto','Leon','Ray'];
+  var FN = ['Mark','Charles','Wiliam','George','Jack','James','H.C.','Isaac','Edgar Ellan' ,'Fjoder','Lev','Aleksander','Heinrich','Franz','Aleksandr','Remco','Anton','Umberto','Leon','Ray',
+            'Sade','Alexander','Gijs','José','Eszter','Tamás','Uwe','Frédérik','Joseph',
+            'Brendon','Gé','Inge','Lia','Ron','Dieter','Rick','Stijn','Gilles','Stefan',
+            'Nelson','Ines','Edith','Tom','Duje','Dion','Elt','Nick','Frank','Johannes','Monique',
+            'Peter','Fabienne','Jason','Matthew','Nate','Patrick','Marjolein','Caeleb'
+           ];
   return  FN[Math.floor( FN.length * Math.random ())] ;
 }
 
 function surName(){
-  var LN = ['Twain','Dickens','Shakespear','Orwell','Vance','Baldwin','Wells','Asimov'
-           ,'Poe','Tolstoj','Poeskin','Böll','Kafka','Solzhenitsyn'
-           ,'Campert','Tjechov','Eco','de Winter','Kurzweil'];
+  var LN = ['Twain','Dickens','Shakespear','Orwell','Vance','Baldwin','Wells','Asimov','Poe','Tolstoj','Poeskin','Böll','Kafka','Solzhenitsyn','Campert','Tjechov','Eco','de Winter','Kurzweil',
+            'Daal','Dale Oen','Damen','Damen','Dara','Darnyi','Daßler','Deburghgraeve','de Combe',
+            'Dedekind','Dekker','Dekoninck','DeMont','Depypere','De Wilde','Die',
+            'Diebel','Diers','van Dijk','Dolan','Draganja','Dreesens','Drenth','Driebergen','Drost','Drost',
+            'Dufour','Dunford','Dunn','Dusing','Dybiona','Delno','Dressel' 
+          ];
   return  LN[Math.floor( LN.length * Math.random ())] ;
 }
 
 function Name(){
   return  firstName() + ' ' + surName()  ;
 }
+
+
+
 
