@@ -10,3 +10,4 @@ features;
 	- Random ABC123
 	- Random lorum ipsum
 	- Random lorum ipsum cooorperates
+- generate random unicoded cities

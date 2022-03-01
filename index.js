@@ -9,11 +9,11 @@ module.exports.templateTags = [
 			displayName: 'Nederlands',
 			type: 'enum',
 			options: [
-				{displayName: 'Huisnummers',       value: 'HuisnummersInNederland'},
-				{displayName: 'Plaats',            value: 'PlaatsenInNederland'},
-				{displayName: 'Postcode',          value: 'PostcodesInNederland'},
-				{displayName: 'Straat',            value: 'StratenInNederland'},
-				{displayName: 'Straat huisnummer', value: 'AdressenInNederland'},
+				{displayName: 'Huisnummers',         value: 'HuisnummersInNederland'},
+				{displayName: 'Plaats',              value: 'PlaatsenInNederland'},
+				{displayName: 'Postcode',            value: 'PostcodesInNederland'},
+				{displayName: 'Straat',              value: 'StratenInNederland'},
+				{displayName: 'Straat + huisnummer', value: 'AdressenInNederland'},
 			]
 		} ,    
   ],
@@ -24,7 +24,8 @@ module.exports.templateTags = [
 			case 'HuisnummersInNederland': return HuisnummersInNederland();
 			case 'PlaatsenInNederland':    return PlaatsenInNederland();
 			case 'PostcodesInNederland':   return PostcodesInNederland();
-			case 'AdressenInNederland':    return AdressenInNederland('straat');
+			case 'StratenInNederland':     return AdressenInNederland('straat');
+			case 'AdressenInNederland':    return AdressenInNederland('');
 			default:                       return 'Error - incorrect, or non-existing value selected ';
 		}
     }
