@@ -365,11 +365,12 @@ function CorperateLorumIpsum (maxlength)  {
   for ( i = 1; i < 10; i++ ){ PunctuationMarks.push (' & '); }
   for ( i = 1; i < 10; i++ ){ PunctuationMarks.push (', '); }
 
+  var thema = NounsPlural[Math.floor(Math.random() * NounsPlural.length )];	
   var Continue = true ;
   while ( Continue  ) {
       var Sentence = Adjective[Math.floor(Math.random() * Adjective.length )].capitalize() + 
                      Space +
-                     NounsPlural[Math.floor(Math.random() * NounsPlural.length )]   + 
+                     thema   + 
                      Space +
                      VerbsAuxiliary[Math.floor(Math.random() * VerbsAuxiliary.length )]  +
                      Space +
@@ -389,7 +390,7 @@ function CorperateLorumIpsum (maxlength)  {
                      Space +       
                      Adjective[Math.floor(Math.random() * Adjective.length )] +   
                      Space +
-                     NounsPlural[Math.floor(Math.random() * NounsPlural.length )] +   
+                     thema +   
                      '. ';
       Continue = ((LorumIpsum.length + Sentence.length + 1 ) <= maxlength );
       if (Continue)  {
@@ -397,7 +398,7 @@ function CorperateLorumIpsum (maxlength)  {
                     Space +
                     Adjective[Math.floor(Math.random() * Adjective.length )] +
                     Space +
-                    NounsPlural[Math.floor(Math.random() * NounsPlural.length )]  +
+                    thema  +
                     Space ;
 		if ( Math.random() * 100 > 50 ) {
 		   Sentence += VerbsActionPrefix[Math.floor(Math.random() * VerbsActionPrefix.length )] + Space;
@@ -425,7 +426,7 @@ function CorperateLorumIpsum (maxlength)  {
                     Space +
                     VerbsAction[Math.floor(Math.random() * VerbsAction.length )]  +
                     Space +
-                    NounsPlural[Math.floor(Math.random() * NounsPlural.length )]  +
+                    thema  +
                    '. ';
       }
       LorumIpsum += Sentence ;
