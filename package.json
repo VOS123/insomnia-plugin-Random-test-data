@@ -1,7 +1,7 @@
 {
   "name": "RandomTestData",
    "description": "Generate random test data",
-   "version": "1.4",
+   "version": "1.5",
    "main": "index.js",
    "insomnia": {
     "name": "RandomTestData",  
@@ -11,14 +11,15 @@
    "dependencies": [],
    "devDependencies": [],
    "keywords": [
+    "Adressen",
+    "generator",
     "insomnia",
     "IBAN",
+	  "lorum ipsum",
+	  "lorum ipsum company",   
+    "NAmen",
     "plugin",
-    "plugins",
     "random",
-    "test data",
-    "generator",
-	"lorum ipsum",
-	"Cities in unicode"   
+    "test data"
   ]
 }

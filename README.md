@@ -1,6 +1,7 @@
 # insomnia-plugin-Random-test-data 
 Generate random test data 
 features;
+- generate Names
 - generate random fake IBAN  (NL & DE)
 - generate random Dutch addresses
 - generate random numbers

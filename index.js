@@ -1,4 +1,3 @@
-
 module.exports.templateTags = [
 {
 	  name: 'Adres',    
@@ -29,6 +28,34 @@ module.exports.templateTags = [
 			default:                       return 'Error - incorrect, or non-existing value selected ';
 		}
     }
+
+} ,
+
+{
+  name: 'Naam',    
+  displayName: 'Namen',
+  description: 'Creer willekeurige namen.',        
+  args: [
+  {
+    displayName: 'Namen',
+    type: 'enum',
+    options: [
+      {displayName: 'Voornamen',            value: 'Voornamen'},
+      {displayName: 'Achternamen',          value: 'Achternamen'},
+      {displayName: 'Voor- en achternamen', value: 'Namen'}
+    ]
+  } ,    
+],
+
+run (context , datatype  ) {
+  
+  switch (datatype) {
+    case 'Voornamen':      return firstName();
+    case 'Achternamen':    return surName();
+    case 'Namen':          return Name();
+    default:               return 'Error - incorrect, or non-existing value selected ';
+  }
+  }
 
 } ,
 
