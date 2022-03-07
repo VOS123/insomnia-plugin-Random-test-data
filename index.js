@@ -120,11 +120,14 @@ run (context , min , max  ) {
     displayName: 'Soort',
     type: 'enum',
     options: [
-      {displayName: 'ABC scramble', value: 'ABCScramble'},	
-      {displayName: '123 scramble', value: '123Scramble'},	
-      {displayName: 'ABC123 scramble', value: 'ABC123Scramble'},	
-      {displayName: 'Lorum Ipsum', value: 'LorumIpsum'},	
-      {displayName: 'Lorum corperate', value: 'CorperateLorumIpsum'},
+      {displayName: 'ABC',                      value: 'ABC'},	
+      {displayName: '123',                      value: '123'},	
+      {displayName: 'ABC123',                   value: 'ABC123'},	
+      {displayName: 'Lorum Ipsum',              value: 'LorumIpsum'},	
+      {displayName: 'Lorum corperate',          value: 'CorperateLorumIpsum'},
+      {displayName: 'Unicode Greek and Coptic', value: 'Unicode Greek and Coptic'},	
+      {displayName: 'Unicode Han',              value: 'Unicode Han'},	
+      {displayName: 'Unicode LatinExtended-B',  value: 'Unicode LatinExtended-B'},	
     ]
   } ,
   {
@@ -143,18 +146,20 @@ run (context , min , max  ) {
 run (context , soort , lengte  ) {
   
   switch (soort) {
-    case 'ABCScramble':          return Scramble('ABC',lengte);
-    case '123Scramble':          return Scramble('123',lengte);
-    case 'ABC123Scramble':       return Scramble('ABC123',lengte);
-    case 'LorumIpsum':           return LorumIpsum(lengte);
-    case 'CorperateLorumIpsum':  return CorperateLorumIpsum(lengte);
-    default:                     return 'Error - incorrect, or non-existing value selected ';
+    case 'ABC':                       return Scramble('ABC',lengte);
+    case '123':                       return Scramble('123',lengte);
+    case 'ABC123':                    return Scramble('ABC123',lengte);
+    case 'LorumIpsum':                return LorumIpsum(lengte);
+    case 'CorperateLorumIpsum':       return CorperateLorumIpsum(lengte);
+    case 'Unicode Greek and Coptic':  return ScrambleUniCode('GreekCoptic',lengte);
+    case 'Unicode Han':               return ScrambleUniCode('HAN',lengte);
+    case 'Unicode LatinExtended-B':   return ScrambleUniCode('LatinExtended-B',lengte);
+    default:                          return 'Error - incorrect, or non-existing value selected ';
   }
 
 }
 
 },
-
 	
 	
 {
@@ -245,18 +250,21 @@ function RandomChooseItem(soort) {
       
       case 'UnicodeCity': {
         Items= ['København'
-        , 'Göteborg','Umeå','Gävle', 'רושלים','תל אביב'  ,'אילת'
+        ,'Кривий Ріг', 'Göteborg','Umeå','Gävle'
+		, 'רושלים','תל אביב'  ,'אילת'
         , 'Curaçao' ,'上海','北京',' 深圳','成都','广州','天津','海参崴'
         ,'서울','부산','釜山','대구 광역시','北京' ,'京都市','大阪市','広島市','奈良市'
         , 'Москва','Санкт-Петербург','Екатеринбург','Владивосток','Нижний Новгород'
         , 'मुंबaī', 'mumbəi' ,'ಬೆಂಗಳೂರು','சென்னை', 'અમદાવાદ', 'الرباط','مراكش ','الدار البيضاء'
-        ];
+		, 'Київ', 'Харків','Одеса','	Дніпро','Донецьк','Запоріжжя','Львів','Кривий Ріг','Миколаїв','Чернігів'
+	    , '	안동시' ,'安東市','안산시','安山市','서울특별시'
+		, 'Ақтау','Ақтөбе','Алматы','Арқалық','Атырау'
+	    ];
       }
-      
+			
     }
     
     return Items[Math.floor(Math.random() * Items.length )] ;
-    
 }
 
 
@@ -376,7 +384,8 @@ function CorperateLorumIpsum (maxlength)  {
   const NounsPlural = ['advisers','employees','companies','coorperations', 'customers','directors','dictators','frameworks','goverments','managers','project leaders','resources','robots','solutions','stakeholders','strategies','suppliers','technologies'];           
   NounsPlural.push ('3D printers','air defence systems','bots','pocket calculators','compilers','computers','desktops', 'factories','gadgets', 'high end solutions','integrated circuites','laptops','mobile phones','protocolls', 'printers','radios','robots','routers','televison stations','workstations', 'wifi connections');
   NounsPlural.push ('accumlators','cookies','data cariers','firewalls','random data generators','radio transmitters','transponders','web servers','websites');
-  NounsPlural.push = ['agents','accountants','artificial intelligent robots','engineers','freaks','financial directors','geeks','hackers','nanobots','nerds','operators','sales managers','security officers','snipers','monkeys','terminators','zilots','zionists'];           
+  NounsPlural.push ('coffee machines','oil drillers','pencil sharpers','type writers','tug-boat');
+  NounsPlural.push = ['agents','accountants','artificial intelligent robots','consultants','engineers','freaks','financial directors','geeks','hackers','telemarketeers','nanobots','nerds','operators','sales managers','security officers','snipers','monkeys','terminators','zilots','zionists'];           
   const VerbsAuxiliary = ['can','could','might','must','shall','should','will'];
   const VerbsAction = ['assist','avoid','deny','betray','enclose','endure','ensure','empower','forget','help','introduce','improve','join', 'maximize','overtake','override','outsource','resist','translate','stimulate'];
   const VerbsActionPrefix = ['always','in most cases','never','not','somethimes'];
@@ -480,10 +489,26 @@ function Scramble (type, maxlength)  {
   }           
   
   while ( Scramble.length  < maxlength  ) {
-      Scramble += Items[Math.floor(Math.random() * Items.length )];
+        Scramble += Items[Math.floor(Math.random() * Items.length )];
   }
   return Scramble;
 }
+
+function ScrambleUniCode (type,maxlength) {
+	var start,eind = 0;
+	switch (type) {
+		case 'HAN': { start = 0x4e00 ;  eind =  0x9ff - start; }
+		case 'GreekCoptic': { start = 880 ;  eind =  1023 - start; }
+		case 'LatinExtended-B': { start = 384 ;  eind =  591 - start; }
+    }	
+    var UC = '';
+	for ( i = 0;  i < maxlength ; i++ ) {
+       UC += String.fromCodePoint( start + Math.floor(Math.random() *  eind )) ; 
+	}
+	return UC ;
+}
+
+
 
 function AdressenInNederland (Soort){
  var Names = ['Appelboom','Beukenboom','Berkenboom','Dennenboom','Iep','Eikenboom','Kastanjeboom','Kersenboom','Perenboom', 'Wilg','Cypres','Ceder',
