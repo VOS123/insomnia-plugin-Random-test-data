@@ -126,7 +126,7 @@ run (context , min , max  ) {
       {displayName: 'Lorum Ipsum',              value: 'LorumIpsum'},	
       {displayName: 'Lorum corperate',          value: 'CorperateLorumIpsum'},
       {displayName: 'Unicode Greek and Coptic', value: 'Unicode Greek and Coptic'},	
-      {displayName: 'Unicode Han',              value: 'Unicode Han'},	
+      {displayName: 'Unicode Chinese',          value: 'Unicode Chinese'},	
       {displayName: 'Unicode LatinExtended-B',  value: 'Unicode LatinExtended-B'},	
     ]
   } ,
@@ -152,7 +152,7 @@ run (context , soort , lengte  ) {
     case 'LorumIpsum':                return LorumIpsum(lengte);
     case 'CorperateLorumIpsum':       return CorperateLorumIpsum(lengte);
     case 'Unicode Greek and Coptic':  return ScrambleUniCode('GreekCoptic',lengte);
-    case 'Unicode Han':               return ScrambleUniCode('HAN',lengte);
+    case 'Unicode Chinese':           return ScrambleUniCode('HAN',lengte);
     case 'Unicode LatinExtended-B':   return ScrambleUniCode('LatinExtended-B',lengte);
     default:                          return 'Error - incorrect, or non-existing value selected ';
   }
@@ -278,69 +278,43 @@ function Mobiel() {
 
 function PlaatsenInNederland () {
   Places = [ 'Aa en Hunze','Aalburg','Aalsmeer','Aalten','Achtkarspelen','Alblasserdam'      
-            ,'Albrandswaard','Alkmaar','Almelo','Almere','Alphen aan den Rijn','Alphen-Chaam'
             ,'Ameland','Amersfoort','Amstelveen','Amsterdam','Apeldoorn','Appingedam','Arnhem'
-            ,'Assen','Asten','Baarle-Nassau','Baarn','Barendrecht','Barneveld','Bedum','Beek'
             ,'Beemster','Beesel','Berg en Dal','Bergeijk','Bergen (L.)','Bergen (NH.)','Bergen op Zoom'
-            ,'Berkelland','Bernheze','Best','Beuningen','Beverwijk','De Bilt'
             ,'Binnenmaas','Bladel','Blaricum','Bloemendaal','Bodegraven-Reeuwijk','Boekel'
-            ,'Ten Boer','Borger-Odoorn','Borne','Borsele','Boxmeer','Boxtel'
             ,'Breda','Brielle','Bronckhorst','Brummen','Brunssum','Bunnik'
-            ,'Bunschoten','Buren','Capelle aan den IJssel','Castricum','Coevorden','Cranendonck'
             ,'Cromstrijen','Cuijk','Culemborg','Dalfsen','Dantumadiel','Delft'
-            ,'Delfzijl','Deurne','Deventer','Diemen','Dinkelland','Doesburg'
             ,'Doetinchem','Dongen','Dongeradeel','Dordrecht','Drechterland','Drimmelen'
-            ,'Dronten','Druten','Duiven','Echt-Susteren','Edam-Volendam','Ede'
             ,'Eemnes','Eemsmond','Eersel','Eijsden-Margraten','Eindhoven','Elburg'
-            ,'Emmen','Enkhuizen','Enschede','Epe','Ermelo','Etten-Leur'
             ,'Ferwerderadiel','De Fryske Marren','Geertruidenberg','Geldermalsen','Geldrop-Mierlo','Gemert-Bakel'
-            ,'Gennep','Giessenlanden','Gilze en Rijen','Goeree-Overflakkee','Goes','Goirle'
             ,'Gooise Meren','Gorinchem','Gouda','Grave','s-Gravenhage','Groningen'
-            ,'Grootegast','Gulpen-Wittem','Haaksbergen','Haaren','Haarlem','Haarlemmerliede en Spaarnwoude'
             ,'Haarlemmermeer','Halderberge','Hardenberg','Harderwijk','Hardinxveld-Giessendam','Haren'
-            ,'Harlingen','Hattem','Heemskerk','Heemstede','Heerde','Heerenveen'
             ,'Heerhugowaard','Heerlen','Heeze-Leende','Heiloo','Den Helder','Hellendoorn'
-            ,'Hellevoetsluis','Helmond','Hendrik-Ido-Ambacht','Hengelo','s-Hertogenbosch','Heumen'
             ,'Heusden','Hillegom','Hilvarenbeek','Hilversum','Hof van Twente','Hollands Kroon'
-            ,'Hoogeveen','Hoorn','Horst aan de Maas','Houten','Huizen','Hulst'
             ,'IJsselstein','Kaag en Braassem','Kampen','Kapelle','Katwijk','Kerkrade'
-            ,'Koggenland','Kollumerland en Nieuwkruisland','Korendijk','Krimpen aan den IJssel','Krimpenerwaard','Laarbeek'
             ,'Landerd','Landgraaf','Landsmeer','Langedijk','Lansingerland','Laren'
-            ,'Leek','Leerdam','Leeuwarden','Leiden','Leiderdorp','Leidschendam-Voorburg'
             ,'Lelystad','Leudal','Leusden','Lingewaal','Lingewaard','Lisse'
-            ,'Lochem','Loon op Zand','Lopik','Loppersum','Losser','Maasdriel'
             ,'Maasgouw','Maassluis','Maastricht','De Marne','Marum','Medemblik'
-            ,'Meerssen','Meierijstad','Meppel','Middelburg','Midden-Delfland','Midden-Drenthe'
             ,'Midden-Groningen','Mill en Sint Hubert','Moerdijk','Molenwaard','Montferland','Montfoort'
-            ,'Mook en Middelaar','Neder-Betuwe','Nederweert','Neerijnen','Nieuwegein','Nieuwkoop'
             ,'Nijkerk','Nijmegen','Nissewaard','Noord-Beveland','Noordenveld','Noordoostpolder'
-            ,'Noordwijk','Noordwijkerhout','Nuene, Gerwen en Nederwetten','Nunspeet','Nuth'
             ,'Oegstgeest','Oirschot','Oisterwijk','Oldambt','Oldebroek','Oldenzaal'
-            ,'Olst-Wijhe','Ommen','Onderbanken','Oost Gelre','Oosterhout','Ooststellingwerf'
             ,'Oostzaan','Opmeer','Opsterland','Oss','Oud-Beijerland','Oude IJsselstreek'
-            ,'Ouder-Amstel','Oudewater','Overbetuwe','Papendrecht','Peel en Maas','Pekela'
             ,'Pijnacker-Nootdorp','Purmerend','Putten','Raalte','Reimerswaal','Renkum'
-            ,'Renswoude','Reusel-De Mierden','Rheden','Rhenen','Ridderkerk','Rijssen-Holten'
             ,'Rijswijk','Roerdalen','Roermond','De Ronde Venen','Roosendaal','Rotterdam'
-            ,'Rozendaal','Rucphen','Schagen','Scherpenzeel','Schiedam','Schiermonnikoog'
             ,'Schinnen','Schouwen-Duiveland','Simpelveld','Sint Anthonis','Sint-Michielsgestel','Sittard-Geleen'
             ,'Sliedrecht','Sluis','Smallingerland','Soest','Someren','Son en Breugel'
-            ,'Stadskanaal','Staphorst','Stede Broec','Steenbergen','Steenwijkerland','Stein'
             ,'Stichtse Vecht','Strijen','Súdwest-Fryslân','Terneuzen','Terschelling','Texel'
             ,'Teylingen','Tholen','Tiel','Tilburg','Tubbergen','Twenterand'
-            ,'Tynaarlo','Tytsjerksteradiel','Uden','Uitgeest','Uithoorn','Urk'
             ,'Utrecht','Utrechtse Heuvelrug','Vaals','Valkenburg aan de Geul','Valkenswaard','Veendam'
             ,'Veenendaal','Veere','Veldhoven','Velsen','Venlo','Venray'
-            ,'Vianen','Vlaardingen','Vlieland','Vlissingen','Voerendaal','Voorschoten'
             ,'Voorst','Vught','Waadhoeke','Waalre','Waalwijk','Waddinxveen'
             ,'Wageningen','Wassenaar','Waterland','Weert','Weesp','Werkendam'
-            ,'West Maas en Waal','Westerveld','Westervoort','Westerwolde','Westland','Weststellingwerf'
             ,'Westvoorne','Wierden','Wijchen','Wijdemeren','Wijk bij Duurstede','Winsum'
-            ,'Winterswijk','Woensdrecht','Woerden','De Wolden','Wormerland','Woudenberg'
             ,'Woudrichem','Zaanstad','Zaltbommel','Zandvoort','Zederik','Zeewolde'
             ,'Zeist','Zevenaar','Zoetermeer','Zoeterwoude','Zuidhorn','Zuidplas'
-            ,'Zundert','Zutphen','Zwartewaterland','Zwijndrech','Zwolle'    ];
-          
+            ,'Zundert','Zutphen','Zwartewaterland','Zwijndrecht','Zwolle'    ];
+
+      for ( i = 1; i < 200; i++ ){ Places.push ('Amsterdam','Amsterdam','Arnhem','Breda','Den Haag','Rotterdam','Rotterdam','Tilburg','Nijmegen','Utrecht'); } 	
+      for ( i = 1; i < 25; i++ ){ Places.push ('Assen','Den Bosch','Groningen','Leeuwarden','Leiden','Maastricht','Zutphen','Zwolle'); } 	
       return Places[Math.floor(Math.random() * Places.length )] ;
 }
 
@@ -384,7 +358,7 @@ function CorperateLorumIpsum (maxlength)  {
   const NounsPlural = ['advisers','employees','companies','coorperations', 'customers','directors','dictators','frameworks','goverments','managers','project leaders','resources','robots','solutions','stakeholders','strategies','suppliers','technologies'];           
   NounsPlural.push ('3D printers','air defence systems','bots','pocket calculators','compilers','computers','desktops', 'factories','gadgets', 'high end solutions','integrated circuites','laptops','mobile phones','protocolls', 'printers','radios','robots','routers','televison stations','workstations', 'wifi connections');
   NounsPlural.push ('accumlators','cookies','data cariers','firewalls','random data generators','radio transmitters','transponders','web servers','websites');
-  NounsPlural.push ('coffee machines','oil drillers','pencil sharpers','type writers','tug-boat');
+  NounsPlural.push ('vending machines','coffee machines','oil drillers','pencil sharpers','type writers','tug-boat','thoot picks','hearing aids');
   NounsPlural.push = ['agents','accountants','artificial intelligent robots','consultants','engineers','freaks','financial directors','geeks','hackers','telemarketeers','nanobots','nerds','operators','sales managers','security officers','snipers','monkeys','terminators','zilots','zionists'];           
   const VerbsAuxiliary = ['can','could','might','must','shall','should','will'];
   const VerbsAction = ['assist','avoid','deny','betray','enclose','endure','ensure','empower','forget','help','introduce','improve','join', 'maximize','overtake','override','outsource','resist','translate','stimulate'];
@@ -497,13 +471,14 @@ function Scramble (type, maxlength)  {
 function ScrambleUniCode (type,maxlength) {
 	var start,eind = 0;
 	switch (type) {
-		case 'HAN': { start = 0x4e00 ;  eind =  0x9ff - start; }
-		case 'GreekCoptic': { start = 880 ;  eind =  1023 - start; }
-		case 'LatinExtended-B': { start = 384 ;  eind =  591 - start; }
+		case 'HAN': { start = 19968 ;  eind =  20902; break; }
+		case 'GreekCoptic': { start = 880 ;  eind =  1023 - start; break; }
+		case 'LatinExtended-B': { start = 384 ;  eind =  591 - start; break; }
     }	
     var UC = '';
 	for ( i = 0;  i < maxlength ; i++ ) {
-       UC += String.fromCodePoint( start + Math.floor(Math.random() *  eind )) ; 
+       /* UC += String.fromCodePoint( start + Math.floor(Math.random() *  eind )) ; */
+		UC += String.fromCodePoint( start + ( Math.floor( Math.random() *  eind )))  ;
 	}
 	return UC ;
 }
