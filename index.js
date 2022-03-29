@@ -110,6 +110,25 @@ run (context , min , max  ) {
 
 },
 
+{
+  name: 'Waardes',    
+  displayName: 'Random Waardes uit je lijst',
+  description: 'Selecteert 1 waarde uit een zelfbepaalde.',        
+  args: [
+  {
+    displayName: 'Voer komma-gescheiden waardes in.',
+    type: 'string',
+	defaultValue: "A,B,C,D,1,2,3"
+  } 
+  
+],
+
+run (context , lijst   ) {
+ return SelecteerItems(lijst);
+}
+
+},
+    
 	
 {
   name: 'RandomTestText',    
@@ -451,6 +470,11 @@ function capatalize(str){
   return  str.charAt(0).toUpperCase() 
       + lower.slice(1) 
 }
+
+function SelecteerItems (lijst) {
+   Items = lijst.split(',');
+   return Items[Math.floor(Math.random() * Items.length )] ;  
+}    
 
 
 function Scramble (type, maxlength)  {
