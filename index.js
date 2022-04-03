@@ -1,6 +1,7 @@
 module.exports.templateTags = [
 {
-	  name: 'Adres',    
+
+  name: 'Adres',    
     displayName: 'Random adressen in Nederland',
     description: 'Creer willekeurige Nederlandse adressen.',        
 	  args: [
@@ -59,6 +60,60 @@ run (context , datatype  ) {
 
 } ,
 
+
+{
+  name: 'datums',
+  displayName: 'Datums',
+  description: 'Plaats -relatieve- datum',
+  args: [
+      {
+          displayName: 'Formaat',
+          defaultValue: 'JSON00',
+          type: 'enum',
+          options: [
+              { displayName: 'JSON (Tijd = 00:00:00)',   value: 'JSON00' },
+              { displayName: 'JSON (Tijd = nu)',   value: 'JSONNU' },
+              { displayName: 'ISO',    value: 'ISO' },
+          ],
+      },
+      {
+        displayName: 'Plus, of min aantal dagen, byvoorbeeld; -1 is gister ',
+        type: 'number',
+        defaultValue: +10
+      } ,
+      
+  ],
+
+  async run (context, format = 'datetime',aantaldagen) {
+
+    vandaag = new Date();
+    vandaag = vandaag.getDate();
+    const d = new Date();
+
+    switch (format) {
+      case 'JSON00':        
+        d.setDate(vandaag + aantaldagen );
+        text = d.toJSON();
+        datetime = text.substr(0,10) + 'T00:00:00' ;
+        break;
+      case 'JSONNU':
+        d.setDate(vandaag + aantaldagen );
+        datetime = d.toJSON();
+        break;
+      case 'ISO':
+        d.setDate(vandaag + aantaldagen );
+        datetime = d.toISOString();
+        break;
+      default:
+          throw new Error("Datum keuze verkeerd.");
+    }
+
+    return datetime;
+
+  }
+} ,
+
+
 {
   name: 'IBAN',    
   displayName: 'Random IBAN',
@@ -66,6 +121,7 @@ run (context , datatype  ) {
   args: [
   {
     displayName: 'IBAN',
+    defaultValue: 'IBANNL',
     type: 'enum',
     options: [
       {displayName: 'Duitsland (DE)', value: 'IBANDE'},
