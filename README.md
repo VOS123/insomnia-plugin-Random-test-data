@@ -11,7 +11,7 @@ features;
 	- Random 123
 	- Random ABC123
 	- Random lorum ipsum
-	- Random lorum ipsum cooorperates
+	- Random lorum ipsum company jargon
 	- RandomUnicode Greek and Coptic	
     - RandomUnicode Chinese	
     - RandomUnicode LatinExtended-B	
