@@ -64,33 +64,44 @@ run (context , datatype  ) {
 {
   name: 'datums',
   displayName: 'Datums',
-  description: 'Plaats -relatieve- datum',
+  description: 'Plaatst een willekeurige datum, tussen vanaf & totdatum',
   args: [
       {
           displayName: 'Formaat',
           defaultValue: 'JSON00',
           type: 'enum',
           options: [
-              { displayName: 'JSON (Tijd = 00:00:00)',   value: 'JSON00' },
-              { displayName: 'JSON (Tijd = nu)',   value: 'JSONNU' },
-              { displayName: 'ISO',    value: 'ISO' },
+            { displayName: 'JSON (Tijd = 00:00:00), voorbeeld 2022-04-12T00:00:00',   value: 'JSON00' },
+            { displayName: 'JSON (Tijd = nu)2022-04-12T13:05:57.231Z',   value: 'JSONNU' },
+            { displayName: 'ISO',    value: 'ISO' },
           ],
       },
       {
-        displayName: 'Plus, of min aantal dagen, byvoorbeeld; -1 is gister ',
+        displayName: 'Vanaf datum Plus, of min aantal dagen, byvoorbeeld; -1 is gister ',
         type: 'number',
-        defaultValue: +10
+        defaultValue:  -1
+      } ,
+      {
+        displayName: 'Tot datum Plus, of min aantal dagen, byvoorbeeld; 2 is overmorgen ',
+        type: 'number',
+        defaultValue: +2
       } ,
       
   ],
 
-  async run (context, format = 'datetime',aantaldagen) {
+  async run (context, format = 'datetime',min,max) {
 
     vandaag = new Date();
     vandaag = vandaag.getDate();
     const d = new Date();
 
+    aantaldagen = Math.floor(Math.random() * (max - min + 1) ) + min ;
+     
+
     switch (format) {
+      case 'TEST':        
+        datetime = aantaldagen ;
+        break;
       case 'JSON00':        
         d.setDate(vandaag + aantaldagen );
         text = d.toJSON();
