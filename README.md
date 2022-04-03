@@ -4,8 +4,9 @@ features;
 - generate Names
 - generate random fake IBAN  (NL & DE)
 - generate random Dutch addresses
+- select a random item from your comma separated list
 - generate random numbers
-- generate random dates
+- select a random date from a date-range
 - generate random texts 
 	- Random ABC
 	- Random 123
