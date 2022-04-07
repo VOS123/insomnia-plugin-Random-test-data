@@ -348,7 +348,11 @@ function Place (country) {
 		  break; 		  
 	  }
 	  case 'BE': {
-        Places = [ 'Antwerpen','Brussel','Gent','Leuve'    ];
+        Places = [ 'Antwerpen','Brugge', 'Brussel','Dinant','Gent','Hasselt','Kortrijk','Leuven','Luik','Mechelen','Namen','Oostende'    ];
+		  break; 		  
+	  }
+	  case 'DE': {
+        Places = [ 'Berlin','Bremen','Düsseldorf','Dresden','Hamburg','Keulen','Koblenz','Leipzich','München','Neurenberg','Potzdam','Trier'    ];
 		  break; 		  
 	  }
 	  default: {
@@ -365,12 +369,9 @@ function Place (country) {
 
 
 function LorumIpsum (maxlength)  {
-      Words = ['mauris','iaculis','felis','purus', 'et','varius','lectus','tempus','sed',
-               'non','semper','mi','ac','porta','augue','ondimentum','purus','ut','urna', 
-               'pulvinar','magna','euismod','posuere','ante','in','quam','laoreet','placerat',
-               'labitur',  'feugiat',  'civibus', 'platonem', 'consequuntur',  'vix',  'ei',  
-               'mauris' ,'dapibus', 'pulvinar','porta', 'aliquam', 'hendrerit', 'mauris', 
-               'viverra', 'tincidunt', 'interdum', 'dui', 'libero' ,'luctus' , 'dui'
+      Words = ['mauris','iaculis','felis','purus', 'et','varius','lectus','tempus','sed','non','semper','mi','ac','porta','augue','ondimentum','purus','ut','urna', 
+               'pulvinar','magna','euismod','posuere','ante','in','quam','laoreet','placerat','labitur',  'feugiat',  'civibus', 'platonem', 'consequuntur',  'vix',  'ei',  
+               'mauris' ,'dapibus', 'pulvinar','porta', 'aliquam', 'hendrerit', 'mauris','viverra', 'tincidunt', 'interdum', 'dui', 'libero' ,'luctus' , 'dui'
                ,'sagittis', 'varius' , ', est' , 'augue' , ', et', ', in'
                ];
                
