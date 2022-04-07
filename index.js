@@ -1,31 +1,39 @@
 module.exports.templateTags = [
 {
-
-  name: 'Adres',    
-    displayName: 'Random adressen in Nederland',
-    description: 'Creer willekeurige Nederlandse adressen.',        
+	name: 'Addresses',    
+    displayName: 'Random addresses ',
+    description: 'It wil create random addresses.',        
 	  args: [
 		{
-			displayName: 'Nederlands',
+			displayName: 'Select your Country',
 			type: 'enum',
 			options: [
-				{displayName: 'Huisnummers',         value: 'HuisnummersInNederland'},
-				{displayName: 'Plaats',              value: 'PlaatsenInNederland'},
-				{displayName: 'Postcode',            value: 'PostcodesInNederland'},
-				{displayName: 'Straat',              value: 'StratenInNederland'},
-				{displayName: 'Straat + huisnummer', value: 'AdressenInNederland'},
+				{displayName: 'BE',                  value: 'BE'},
+				{displayName: 'DE',                  value: 'DE'},
+				{displayName: 'NL',                  value: 'NL'},
+			]
+		} ,    
+		{
+			displayName: 'Select your adddress type',
+			type: 'enum',
+			options: [
+				{displayName: 'Housenumber',          value: 'Housenumber'},
+				{displayName: 'Place',                value: 'Place'},
+				{displayName: 'Postalcode',           value: 'Postalcode'},
+				{displayName: 'Street',               value: 'Street'},
+				{displayName: 'Street + housenumber', value: 'StreetHousenumber'},
 			]
 		} ,    
   ],
 	
-  run (context , datatype  ) {
+  run (context , country , addresstype   ) {
 		
-		switch (datatype) {
-			case 'HuisnummersInNederland': return HuisnummersInNederland();
-			case 'PlaatsenInNederland':    return PlaatsenInNederland();
-			case 'PostcodesInNederland':   return PostcodesInNederland();
-			case 'StratenInNederland':     return AdressenInNederland('straat');
-			case 'AdressenInNederland':    return AdressenInNederland('');
+		switch (addresstype) {
+			case 'Housenumber':            return Housenumber(country);
+			case 'Place':                  return Place(country);
+			case 'Postalcode':             return Postalcode(country);
+			case 'Street':                 return Address(country, 'street');
+			case 'StreetHousenumber':      return Address(country, '');
 			default:                       return 'Error - incorrect, or non-existing value selected ';
 		}
     }
@@ -60,71 +68,6 @@ run (context , datatype  ) {
 
 } ,
 
-
-{
-  name: 'datums',
-  displayName: 'Datums',
-  description: 'Plaatst een willekeurige datum, tussen vanaf & totdatum',
-  args: [
-      {
-          displayName: 'Formaat',
-          defaultValue: 'JSON00',
-          type: 'enum',
-          options: [
-            { displayName: 'JSON (Tijd = 00:00:00), voorbeeld 2022-04-12T00:00:00',   value: 'JSON00' },
-            { displayName: 'JSON (Tijd = nu)2022-04-12T13:05:57.231Z',   value: 'JSONNU' },
-            { displayName: 'ISO',    value: 'ISO' },
-          ],
-      },
-      {
-        displayName: 'Vanaf datum Plus, of min aantal dagen, byvoorbeeld; -1 is gister ',
-        type: 'number',
-        defaultValue:  -1
-      } ,
-      {
-        displayName: 'Tot datum Plus, of min aantal dagen, byvoorbeeld; 2 is overmorgen ',
-        type: 'number',
-        defaultValue: +2
-      } ,
-      
-  ],
-
-  async run (context, format = 'datetime',min,max) {
-
-    vandaag = new Date();
-    vandaag = vandaag.getDate();
-    const d = new Date();
-
-    aantaldagen = Math.floor(Math.random() * (max - min + 1) ) + min ;
-     
-
-    switch (format) {
-      case 'TEST':        
-        datetime = aantaldagen ;
-        break;
-      case 'JSON00':        
-        d.setDate(vandaag + aantaldagen );
-        text = d.toJSON();
-        datetime = text.substr(0,10) + 'T00:00:00' ;
-        break;
-      case 'JSONNU':
-        d.setDate(vandaag + aantaldagen );
-        datetime = d.toJSON();
-        break;
-      case 'ISO':
-        d.setDate(vandaag + aantaldagen );
-        datetime = d.toISOString();
-        break;
-      default:
-          throw new Error("Datum keuze verkeerd.");
-    }
-
-    return datetime;
-
-  }
-} ,
-
-
 {
   name: 'IBAN',    
   displayName: 'Random IBAN',
@@ -132,7 +75,6 @@ run (context , datatype  ) {
   args: [
   {
     displayName: 'IBAN',
-    defaultValue: 'IBANNL',
     type: 'enum',
     options: [
       {displayName: 'Duitsland (DE)', value: 'IBANDE'},
@@ -362,46 +304,62 @@ function Mobiel() {
   return (prefix + randomNumber ).toString();
 }
 
-function PlaatsenInNederland () {
-  Places = [ 'Aa en Hunze','Aalburg','Aalsmeer','Aalten','Achtkarspelen','Alblasserdam'      
-            ,'Ameland','Amersfoort','Amstelveen','Amsterdam','Apeldoorn','Appingedam','Arnhem'
-            ,'Beemster','Beesel','Berg en Dal','Bergeijk','Bergen (L.)','Bergen (NH.)','Bergen op Zoom'
-            ,'Binnenmaas','Bladel','Blaricum','Bloemendaal','Bodegraven-Reeuwijk','Boekel'
-            ,'Breda','Brielle','Bronckhorst','Brummen','Brunssum','Bunnik'
-            ,'Cromstrijen','Cuijk','Culemborg','Dalfsen','Dantumadiel','Delft'
-            ,'Doetinchem','Dongen','Dongeradeel','Dordrecht','Drechterland','Drimmelen'
-            ,'Eemnes','Eemsmond','Eersel','Eijsden-Margraten','Eindhoven','Elburg'
-            ,'Ferwerderadiel','De Fryske Marren','Geertruidenberg','Geldermalsen','Geldrop-Mierlo','Gemert-Bakel'
-            ,'Gooise Meren','Gorinchem','Gouda','Grave','s-Gravenhage','Groningen'
-            ,'Haarlemmermeer','Halderberge','Hardenberg','Harderwijk','Hardinxveld-Giessendam','Haren'
-            ,'Heerhugowaard','Heerlen','Heeze-Leende','Heiloo','Den Helder','Hellendoorn'
-            ,'Heusden','Hillegom','Hilvarenbeek','Hilversum','Hof van Twente','Hollands Kroon'
-            ,'IJsselstein','Kaag en Braassem','Kampen','Kapelle','Katwijk','Kerkrade'
-            ,'Landerd','Landgraaf','Landsmeer','Langedijk','Lansingerland','Laren'
-            ,'Lelystad','Leudal','Leusden','Lingewaal','Lingewaard','Lisse'
-            ,'Maasgouw','Maassluis','Maastricht','De Marne','Marum','Medemblik'
-            ,'Midden-Groningen','Mill en Sint Hubert','Moerdijk','Molenwaard','Montferland','Montfoort'
-            ,'Nijkerk','Nijmegen','Nissewaard','Noord-Beveland','Noordenveld','Noordoostpolder'
-            ,'Oegstgeest','Oirschot','Oisterwijk','Oldambt','Oldebroek','Oldenzaal'
-            ,'Oostzaan','Opmeer','Opsterland','Oss','Oud-Beijerland','Oude IJsselstreek'
-            ,'Pijnacker-Nootdorp','Purmerend','Putten','Raalte','Reimerswaal','Renkum'
-            ,'Rijswijk','Roerdalen','Roermond','De Ronde Venen','Roosendaal','Rotterdam'
-            ,'Schinnen','Schouwen-Duiveland','Simpelveld','Sint Anthonis','Sint-Michielsgestel','Sittard-Geleen'
-            ,'Sliedrecht','Sluis','Smallingerland','Soest','Someren','Son en Breugel'
-            ,'Stichtse Vecht','Strijen','Súdwest-Fryslân','Terneuzen','Terschelling','Texel'
-            ,'Teylingen','Tholen','Tiel','Tilburg','Tubbergen','Twenterand'
-            ,'Utrecht','Utrechtse Heuvelrug','Vaals','Valkenburg aan de Geul','Valkenswaard','Veendam'
-            ,'Veenendaal','Veere','Veldhoven','Velsen','Venlo','Venray'
-            ,'Voorst','Vught','Waadhoeke','Waalre','Waalwijk','Waddinxveen'
-            ,'Wageningen','Wassenaar','Waterland','Weert','Weesp','Werkendam'
-            ,'Westvoorne','Wierden','Wijchen','Wijdemeren','Wijk bij Duurstede','Winsum'
-            ,'Woudrichem','Zaanstad','Zaltbommel','Zandvoort','Zederik','Zeewolde'
-            ,'Zeist','Zevenaar','Zoetermeer','Zoeterwoude','Zuidhorn','Zuidplas'
-            ,'Zundert','Zutphen','Zwartewaterland','Zwijndrecht','Zwolle'    ];
+function Place (country) {
+	switch ( country) {
+	  case 'NL': {
+        Places = [ 'Aa en Hunze','Aalburg','Aalsmeer','Aalten','Achtkarspelen','Alblasserdam'      
+				,'Ameland','Amersfoort','Amstelveen','Amsterdam','Apeldoorn','Appingedam','Arnhem'
+				,'Beemster','Beesel','Berg en Dal','Bergeijk','Bergen (L.)','Bergen (NH.)','Bergen op Zoom'
+				,'Binnenmaas','Bladel','Blaricum','Bloemendaal','Bodegraven-Reeuwijk','Boekel'
+				,'Breda','Brielle','Bronckhorst','Brummen','Brunssum','Bunnik'
+				,'Cromstrijen','Cuijk','Culemborg','Dalfsen','Dantumadiel','Delft'
+				,'Doetinchem','Dongen','Dongeradeel','Dordrecht','Drechterland','Drimmelen'
+				,'Eemnes','Eemsmond','Eersel','Eijsden-Margraten','Eindhoven','Elburg'
+				,'Ferwerderadiel','De Fryske Marren','Geertruidenberg','Geldermalsen','Geldrop-Mierlo','Gemert-Bakel'
+				,'Gooise Meren','Gorinchem','Gouda','Grave','s-Gravenhage','Groningen'
+				,'Haarlemmermeer','Halderberge','Hardenberg','Harderwijk','Hardinxveld-Giessendam','Haren'
+				,'Heerhugowaard','Heerlen','Heeze-Leende','Heiloo','Den Helder','Hellendoorn'
+				,'Heusden','Hillegom','Hilvarenbeek','Hilversum','Hof van Twente','Hollands Kroon'
+				,'IJsselstein','Kaag en Braassem','Kampen','Kapelle','Katwijk','Kerkrade'
+				,'Landerd','Landgraaf','Landsmeer','Langedijk','Lansingerland','Laren'
+				,'Lelystad','Leudal','Leusden','Lingewaal','Lingewaard','Lisse'
+				,'Maasgouw','Maassluis','Maastricht','De Marne','Marum','Medemblik'
+				,'Midden-Groningen','Mill en Sint Hubert','Moerdijk','Molenwaard','Montferland','Montfoort'
+				,'Nijkerk','Nijmegen','Nissewaard','Noord-Beveland','Noordenveld','Noordoostpolder'
+				,'Oegstgeest','Oirschot','Oisterwijk','Oldambt','Oldebroek','Oldenzaal'
+				,'Oostzaan','Opmeer','Opsterland','Oss','Oud-Beijerland','Oude IJsselstreek'
+				,'Pijnacker-Nootdorp','Purmerend','Putten','Raalte','Reimerswaal','Renkum'
+				,'Rijswijk','Roerdalen','Roermond','De Ronde Venen','Roosendaal','Rotterdam'
+				,'Schinnen','Schouwen-Duiveland','Simpelveld','Sint Anthonis','Sint-Michielsgestel','Sittard-Geleen'
+				,'Sliedrecht','Sluis','Smallingerland','Soest','Someren','Son en Breugel'
+				,'Stichtse Vecht','Strijen','Súdwest-Fryslân','Terneuzen','Terschelling','Texel'
+				,'Teylingen','Tholen','Tiel','Tilburg','Tubbergen','Twenterand'
+				,'Utrecht','Utrechtse Heuvelrug','Vaals','Valkenburg aan de Geul','Valkenswaard','Veendam'
+				,'Veenendaal','Veere','Veldhoven','Velsen','Venlo','Venray'
+				,'Voorst','Vught','Waadhoeke','Waalre','Waalwijk','Waddinxveen'
+				,'Wageningen','Wassenaar','Waterland','Weert','Weesp','Werkendam'
+				,'Westvoorne','Wierden','Wijchen','Wijdemeren','Wijk bij Duurstede','Winsum'
+				,'Woudrichem','Zaanstad','Zaltbommel','Zandvoort','Zederik','Zeewolde'
+				,'Zeist','Zevenaar','Zoetermeer','Zoeterwoude','Zuidhorn','Zuidplas'
+				,'Zundert','Zutphen','Zwartewaterland','Zwijndrecht','Zwolle'    ];
 
-      for ( i = 1; i < 200; i++ ){ Places.push ('Amsterdam','Amsterdam','Arnhem','Breda','Den Haag','Rotterdam','Rotterdam','Tilburg','Nijmegen','Utrecht'); } 	
-      for ( i = 1; i < 25; i++ ){ Places.push ('Assen','Den Bosch','Groningen','Leeuwarden','Leiden','Maastricht','Zutphen','Zwolle'); } 	
-      return Places[Math.floor(Math.random() * Places.length )] ;
+		  for ( i = 1; i < 200; i++ ){ Places.push ('Amsterdam','Amsterdam','Arnhem','Breda','Den Haag','Rotterdam','Rotterdam','Tilburg','Nijmegen','Utrecht'); } 	
+		  for ( i = 1; i < 25; i++ ){ Places.push ('Assen','Den Bosch','Groningen','Leeuwarden','Leiden','Maastricht','Zutphen','Zwolle'); } 	
+		  break; 		  
+	  }
+	  case 'BE': {
+        Places = [ 'Antwerpen','Brussel','Gent','Leuve'    ];
+		  break; 		  
+	  }
+	  default: {
+	    return 'Country (' + country + ') not yet supported.';		
+		break;
+	  }	  
+		  
+  }	  
+  
+  return Places[Math.floor(Math.random() * Places.length )] ;
+
 }
 
 
@@ -576,53 +534,62 @@ function ScrambleUniCode (type,maxlength) {
 
 
 
-function AdressenInNederland (Soort){
- var Names = ['Appelboom','Beukenboom','Berkenboom','Dennenboom','Iep','Eikenboom','Kastanjeboom','Kersenboom','Perenboom', 'Wilg','Cypres','Ceder',
-              'Appelboom','Beukenboom','Berkenboom','Dennenboom','Iep','Eikenboom','Kastanjeboom','Kersenboom','Perenboom', 'Wilg','Cypres','Ceder',
-              'Appelboom','Beukenboom','Berkenboom','Dennenboom','Iep','Eikenboom','Kastanjeboom','Kersenboom','Perenboom', 'Wilg','Cypres','Ceder',
-              'Anjer', 'Margriet', 'Rozen','Sneeuwklokjes','Tulpen','Vergeetmeniet','Zonnenbloem',
-              'Anjer', 'Margriet', 'Rozen','Sneeuwklokjes','Tulpen','Vergeetmeniet','Zonnenbloem',
-              'Anjer', 'Margriet', 'Rozen','Sneeuwklokjes','Tulpen','Vergeetmeniet','Zonnenbloem',
-              'Jupiter', 'Mercurius','Maan', 'Mars', 'Saturnus', 'Uranus', 'Venus' , 'Zon',
-              'Jupiter', 'Mercurius','Maan', 'Mars', 'Saturnus', 'Uranus', 'Venus' , 'Zon',
-              'Jupiter', 'Mercurius','Maan', 'Mars', 'Saturnus', 'Uranus', 'Venus' , 'Zon',
-              'Einstein','Edison','Tesla','Newton','Celcius','Kelvin','Pasteur','Arieh Warshel ','Michael Levitt ','Daniel Shechtman ','Ada Yonath ',
-              'Aaron Ciechanover ','Avram Hershko ','Yitzchak Rabin ','Shimon Peres ','Menachem Begin','Sjmoeël Joseef Agnon',
-              'Gerard Aafjes','Carlos Aalbers','Gert Aandewiel','Patrick van Aanholt','Henny van der Aar','Kees Aarts','Christopher van der Aat',
-              'Martijn Abbenhues','Martin Abbenhuis','Yassine Abdellaoui','David Abdul','Liban Abdulahi','Dirk Abels','Gert Abma','Johan Abma',
-              'Anass Achahbar','Rochdi Achenteh','Eddy Achterberg','Giorgio Achterberg','John Achterberg','Elton Acolatse','Law Adam','Marcel Adam'
-              ,'Michel Adam','Michiel Adams','Johan Adang','Cor Adelaar','Frans Adelaar','Erik van Adelberg','Co Adriaanse','Dick Advocaat','Romeo van Aerde'
-              ,'Berry van Aerle','Jos van Aerts','Maikel Aerts','Ibrahim Afellay','Kemy Agustien','Achmed Ahahaoui','Alami Ahannach','Soufyan Ahannach','Bert Aipassa',
-              'Ismaïl Aissati','Nathan Aké','Joost van Aken','Marcel Akerboom','Jan van de Akker','Sofian Akouili','Fahd Aktaou','Furkan Alakmak','Tony Alberda',
-              'Suently Alberto','René Alberts','Quentin Albertus','Norbert Alblas','Roland Alberg','Suently Alberto','Rob Alflen','Shapoul Ali','Adnan Alisic','Mohammed Allach',
-              'Quincy Allée','Frans Alma','Pier Alma','Anmar Almubaraki','Marco van Alphen','Jim van Alst','Jeffrey Altheer','Samir Amari','Pelle van Amersfoort','Mawouna Amevor',
-              'Mustafa Amezrine','Carlo lAmi','Ahmed Ammi','Nordin Amrabat','Sofyan Amrabat','Zakaria Amrani','Wim Anderiesen','Djavan Anderson','Kenny Anderson','Aad Andriessen',
-              'Ype Anema','Henk Angenent','Vurnon Anita','Pelé van Anholt','Edwin van Ankeren','Jarchinio Antonia','Geraldo António','Rodney Antwi','Soufiane Aouragh','Mitch Apau',
-              'Bram Appel','Menno van Appelen','Henk den Arend','Berry Arends','Richard Arends','Yener Arıca','Ceylan Arikan','Willem van der Ark','Philippe van Arnhem','Peter Arntz',
-              'Sjoerd Ars','Masies Artien','Alfons Arts','Arno Arts','Jan Artz','Wouter Artz','Hans van Arum','Jeffrey van As','Deniz Aslan','Elroy Asmus','Oussama Assaidi','Abdes Assouiki',
-              'Kevin van Assouw','Maarten Atmodikoro','Raymond Atteveld','Adil Auassar','Pascal Averdijk','Berthil ter Avest','Hidde ter Avest','Patrick Ax','Yassin Ayoub','Yassine Azzagari',
-              'Stefan Aartsen','Carolyn Adel','Jasper Aerents','Robin van Aggele','Triin Aljand','Franziska van Almsick','Jopie van Alphen','Therese Alshammar','Irina Amsjennikova','Greta Andersen'
-              ,'Mayumi Aoki','Duncan Armstrong','Örn Arnarson','Eva Arndt','Isabelle Arnould','Pär Arvidsson','Alia Atkinson','Garnet Ault',
-              'Sade Daal','Alexander Dale Oen','Gijs Damen','José Damen','Eszter Dara','Tamás Darnyi','Uwe Daßler','Frédérik Deburghgraeve','Joseph De Combe',
-              'Brendon Dedekind','Gé Dekker','Inge Dekker','Lia Dekker','Ron Dekker','Dieter Dekoninck','Rick DeMont','Stijn Depypere','Gilles De Wilde','Stefan de Die',
-              'Nelson Diebel','Ines Diers','Edith van Dijk','Tom Dolan','Duje Draganja','Dion Dreesens','Elt Drenth','Nick Driebergen','Frank Drost','Johannes Drost','Monique Drost',
-              'Peter Drost','Fabienne Dufour','Jason Dunford','Matthew Dunn','Nate Dusing','Patrick Dybiona','Marjolein Delno','Caeleb Dressel'
-              ];
- var Types = ['laan', 'plein', 'straat' , 'straat'];
+function Address (country, Soort){
+ switch (country) {	
+	 case 'NL': {
+		var Names = ['Appelboom','Beukenboom','Berkenboom','Dennenboom','Iep','Eikenboom','Kastanjeboom','Kersenboom','Perenboom', 'Wilg','Cypres','Ceder',
+				  'Appelboom','Beukenboom','Berkenboom','Dennenboom','Iep','Eikenboom','Kastanjeboom','Kersenboom','Perenboom', 'Wilg','Cypres','Ceder',
+				  'Appelboom','Beukenboom','Berkenboom','Dennenboom','Iep','Eikenboom','Kastanjeboom','Kersenboom','Perenboom', 'Wilg','Cypres','Ceder',
+				  'Anjer', 'Margriet', 'Rozen','Sneeuwklokjes','Tulpen','Vergeetmeniet','Zonnenbloem',
+				  'Anjer', 'Margriet', 'Rozen','Sneeuwklokjes','Tulpen','Vergeetmeniet','Zonnenbloem',
+				  'Anjer', 'Margriet', 'Rozen','Sneeuwklokjes','Tulpen','Vergeetmeniet','Zonnenbloem',
+				  'Jupiter', 'Mercurius','Maan', 'Mars', 'Saturnus', 'Uranus', 'Venus' , 'Zon',
+				  'Jupiter', 'Mercurius','Maan', 'Mars', 'Saturnus', 'Uranus', 'Venus' , 'Zon',
+				  'Jupiter', 'Mercurius','Maan', 'Mars', 'Saturnus', 'Uranus', 'Venus' , 'Zon',
+				  'Einstein','Edison','Tesla','Newton','Celcius','Kelvin','Pasteur','Arieh Warshel ','Michael Levitt ','Daniel Shechtman ','Ada Yonath ',
+				  'Aaron Ciechanover ','Avram Hershko ','Yitzchak Rabin ','Shimon Peres ','Menachem Begin','Sjmoeël Joseef Agnon',
+				  'Gerard Aafjes','Carlos Aalbers','Gert Aandewiel','Patrick van Aanholt','Henny van der Aar','Kees Aarts','Christopher van der Aat',
+				  'Martijn Abbenhues','Martin Abbenhuis','Yassine Abdellaoui','David Abdul','Liban Abdulahi','Dirk Abels','Gert Abma','Johan Abma',
+				  'Anass Achahbar','Rochdi Achenteh','Eddy Achterberg','Giorgio Achterberg','John Achterberg','Elton Acolatse','Law Adam','Marcel Adam'
+				  ,'Michel Adam','Michiel Adams','Johan Adang','Cor Adelaar','Frans Adelaar','Erik van Adelberg','Co Adriaanse','Dick Advocaat','Romeo van Aerde'
+				  ,'Berry van Aerle','Jos van Aerts','Maikel Aerts','Ibrahim Afellay','Kemy Agustien','Achmed Ahahaoui','Alami Ahannach','Soufyan Ahannach','Bert Aipassa',
+				  'Ismaïl Aissati','Nathan Aké','Joost van Aken','Marcel Akerboom','Jan van de Akker','Sofian Akouili','Fahd Aktaou','Furkan Alakmak','Tony Alberda',
+				  'Suently Alberto','René Alberts','Quentin Albertus','Norbert Alblas','Roland Alberg','Suently Alberto','Rob Alflen','Shapoul Ali','Adnan Alisic','Mohammed Allach',
+				  'Quincy Allée','Frans Alma','Pier Alma','Anmar Almubaraki','Marco van Alphen','Jim van Alst','Jeffrey Altheer','Samir Amari','Pelle van Amersfoort','Mawouna Amevor',
+				  'Mustafa Amezrine','Carlo lAmi','Ahmed Ammi','Nordin Amrabat','Sofyan Amrabat','Zakaria Amrani','Wim Anderiesen','Djavan Anderson','Kenny Anderson','Aad Andriessen',
+				  'Ype Anema','Henk Angenent','Vurnon Anita','Pelé van Anholt','Edwin van Ankeren','Jarchinio Antonia','Geraldo António','Rodney Antwi','Soufiane Aouragh','Mitch Apau',
+				  'Bram Appel','Menno van Appelen','Henk den Arend','Berry Arends','Richard Arends','Yener Arıca','Ceylan Arikan','Willem van der Ark','Philippe van Arnhem','Peter Arntz',
+				  'Sjoerd Ars','Masies Artien','Alfons Arts','Arno Arts','Jan Artz','Wouter Artz','Hans van Arum','Jeffrey van As','Deniz Aslan','Elroy Asmus','Oussama Assaidi','Abdes Assouiki',
+				  'Kevin van Assouw','Maarten Atmodikoro','Raymond Atteveld','Adil Auassar','Pascal Averdijk','Berthil ter Avest','Hidde ter Avest','Patrick Ax','Yassin Ayoub','Yassine Azzagari',
+				  'Stefan Aartsen','Carolyn Adel','Jasper Aerents','Robin van Aggele','Triin Aljand','Franziska van Almsick','Jopie van Alphen','Therese Alshammar','Irina Amsjennikova','Greta Andersen'
+				  ,'Mayumi Aoki','Duncan Armstrong','Örn Arnarson','Eva Arndt','Isabelle Arnould','Pär Arvidsson','Alia Atkinson','Garnet Ault',
+				  'Sade Daal','Alexander Dale Oen','Gijs Damen','José Damen','Eszter Dara','Tamás Darnyi','Uwe Daßler','Frédérik Deburghgraeve','Joseph De Combe',
+				  'Brendon Dedekind','Gé Dekker','Inge Dekker','Lia Dekker','Ron Dekker','Dieter Dekoninck','Rick DeMont','Stijn Depypere','Gilles De Wilde','Stefan de Die',
+				  'Nelson Diebel','Ines Diers','Edith van Dijk','Tom Dolan','Duje Draganja','Dion Dreesens','Elt Drenth','Nick Driebergen','Frank Drost','Johannes Drost','Monique Drost',
+				  'Peter Drost','Fabienne Dufour','Jason Dunford','Matthew Dunn','Nate Dusing','Patrick Dybiona','Marjolein Delno','Caeleb Dressel'
+				  ];
+		var Types = ['laan', 'plein', 'straat' , 'straat'];
 
- var Name = Names[Math.floor(Math.random() * Names.length )] ;
- var Type = Types[Math.floor(Math.random() * Types.length )] ;
- 
- if (Soort == 'straat' ) {
-  return Name + Type  ;
- } else {
-  var Number = Math.round(Math.random() *  200,0);
-  return Name + Type + ' ' + Number ;
- } 
+		var Name = Names[Math.floor(Math.random() * Names.length )] ;
+		var Type = Types[Math.floor(Math.random() * Types.length )] ;
+
+		if (Soort == 'street' ) {
+  		   return Name + Type  ;
+	    } else {
+  		   var Number = Math.round(Math.random() *  200,0);
+		   return Name + Type + ' ' + Number ;
+	   }
+	   break;  
+	}	 
+	default: {
+		return 'Country (' + country + ') not yet supported.';
+		break;
+	} 	 
+  }
 }
 
 
- function HuisnummersInNederland (){
+ function Housenumber (country){
   
   var Number = Math.round(Math.random() *  200,0);
   return Number ;
@@ -630,10 +597,19 @@ function AdressenInNederland (Soort){
  }
  
 
-function PostcodesInNederland (){
- var Number = 1000 + Math.round(Math.random() *  8000,0);
- var Txt = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' ;
- return Number + ' ' + Txt.substr(Math.random() * 26,1)  + Txt.substr(Math.random() *26, 1) ;
+function Postalcode (country){
+ switch ( country) { 	
+	 case 'NL': {
+		 var Number = 1000 + Math.round(Math.random() *  8000,0);
+         var Txt = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' ;	  	 
+         return Number + ' ' + Txt.substr(Math.random() * 26,1)  + Txt.substr(Math.random() *26, 1) ;
+		 break;
+     }
+	default: {
+	    return 'Country (' + country + ') not yet supported.';		
+		break;
+	}
+ }
 }
 
 
