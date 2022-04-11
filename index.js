@@ -213,8 +213,82 @@ run (context , datatype  ) {
   }
   }
 
-}
+} ,
+    
+    
+{
+  name: 'RandomDates',    
+  displayName: 'Random dates ',
+  description: 'Random dates.',        
+  args: [
+  {
+    displayName: 'Date type',
+    type: 'enum',
+    options: [
+      {displayName: 'JSON', value: 'JSON'},								
+      {displayName: 'ISO',  value: 'ISO'}								
+    ]
+  } ,
+  {
+    displayName: 'Time type',
+    type: 'enum',
+    options: [
+      {displayName: 'DAYS',   value: 'DAYS'},								
+      {displayName: 'WEEKS',  value: 'WEEKS'},								
+      {displayName: 'MONTHS', value: 'MONTHS'},								
+      {displayName: 'YEARS',  value: 'YEARS'},								
+    ]
+  } ,
+  {
+    displayName: 'Time type min',
+    type: 'number',
+    options: [
+      {displayName: 'Min.', value: '-1'},								
+    ]
+  } ,
 
+ {
+    displayName: 'Time type max',
+    type: 'number',
+    options: [
+      {displayName: 'Max.', value: '1'},								
+    ]
+  } ,
+
+],
+
+run (context , datatype , timetype , timetypemin, timetypemax ) {
+
+    const d = new Date();
+
+    dagen = Math.floor( Math.random() * ( (timetypemax - timetypemin)  )) + timetypemin; 
+    var today = new Date();
+    today.setDate(today.getDate() - dagen);
+    var dd = String(today.getDate() ).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+    var yyyy = today.getFullYear();
+    
+    switch (datatype) {
+        case "ISO": {
+            var today = new Date();
+            today.setDate(today.getDate() - dagen);
+            var dd = String(today.getDate() ).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+            var yyyy = today.getFullYear();
+            today = yyyy + '-' + mm + '-' + dd + 'T00:00:00' ;
+            return today; 
+           break; 
+        }
+        case "JSON": {
+           return datatype + ' '  + timetype + ' ' +  timetypemin + ' ' + timetypemax ;
+           break; 
+        }
+
+    }        
+
+  }
+
+}
 ];
 
 
