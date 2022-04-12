@@ -219,7 +219,7 @@ run (context , datatype  ) {
 {
   name: 'RandomDates',    
   displayName: 'Random dates ',
-  description: 'a date will be randomly generated from a date range .',        
+  description: 'a date will be randomly selected from a date range .',        
   args: [
   {
     displayName: 'Date type',
