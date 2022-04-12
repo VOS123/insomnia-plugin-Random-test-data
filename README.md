@@ -12,5 +12,4 @@ features;
 	- Random lorum ipsum
 	- Random lorum ipsum cooorperates
 - generate random unicoded cities
-- Working on 
-  Random dates 
+- Random dates 
