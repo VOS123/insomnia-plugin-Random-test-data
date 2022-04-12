@@ -214,33 +214,37 @@ run (context , datatype  ) {
   }
 
 } ,
-    
+               
     
 {
   name: 'RandomDates',    
   displayName: 'Random dates ',
-  description: 'Random dates.',        
+  description: 'a date will be randomly generated from a date range .',        
   args: [
   {
     displayName: 'Date type',
     type: 'enum',
     options: [
-      {displayName: 'JSON', value: 'JSON'},								
-      {displayName: 'ISO',  value: 'ISO'}								
+      {displayName: 'JSON (2022-12-31T00:00:00 ) ', value: 'JSON'},								
+      {displayName: 'JSON (2022-12-31T23:55:00 ) ', value: 'JSONTIME'},								
+      {displayName: 'ISO (2022-12-31)',             value: 'ISO'}, 								
+      {displayName: 'Short Date (12/31/22)',        value: 'SHORTDATE'}, 								
+      {displayName: 'Long Date (Dec 31 22)',        value: 'LONGDATE'}, 								
     ]
   } ,
   {
     displayName: 'Time type',
     type: 'enum',
     options: [
-      {displayName: 'DAYS',   value: 'DAYS'},								
-      {displayName: 'WEEKS',  value: 'WEEKS'},								
-      {displayName: 'MONTHS', value: 'MONTHS'},								
-      {displayName: 'YEARS',  value: 'YEARS'},								
+      {displayName: 'Days',     value: 1 },								
+      {displayName: 'Weeks',    value: 7 },
+	  {displayName: 'Fortnite', value: 14 },	
+      {displayName: 'Months',   value: 31 },								
+      {displayName: 'Years',    value: 356 },								
     ]
   } ,
   {
-    displayName: 'Time type min',
+    displayName: 'Time type min,  for example Days & - 1 is yesterday',
     type: 'number',
     options: [
       {displayName: 'Min.', value: '-1'},								
@@ -248,7 +252,7 @@ run (context , datatype  ) {
   } ,
 
  {
-    displayName: 'Time type max',
+    displayName: 'Time type max, settings; Days, -1 & +1 will randomly create yesterday, today or tomorrow.',
     type: 'number',
     options: [
       {displayName: 'Max.', value: '1'},								
@@ -257,33 +261,50 @@ run (context , datatype  ) {
 
 ],
 
-run (context , datatype , timetype , timetypemin, timetypemax ) {
+run (context , datatype , timetype , timemin, timemax ) {
 
+	var daysmin = timetype * timemin;   
+	var daysmax = timetype * timemax;
+	
     const d = new Date();
 
-    dagen = Math.floor( Math.random() * ( (timetypemax - timetypemin)  )) + timetypemin; 
-    var today = new Date();
-    today.setDate(today.getDate() - dagen);
-    var dd = String(today.getDate() ).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); 
-    var yyyy = today.getFullYear();
+    dagen = daysmin +  Math.floor( Math.random() * (daysmax - daysmin + 1 ) )   ; 
+	var day = new Date();
+    day.setDate(day.getDate() + dagen);
+    var DD = String(day.getDate() ).padStart(2, '0');
+    var MM = String(day.getMonth() + 1).padStart(2, '0'); 
+    var YYYY = day.getFullYear();
+	var YY = day.getYear();
     
     switch (datatype) {
         case "ISO": {
-            var today = new Date();
-            today.setDate(today.getDate() - dagen);
-            var dd = String(today.getDate() ).padStart(2, '0');
-            var mm = String(today.getMonth() + 1).padStart(2, '0'); 
-            var yyyy = today.getFullYear();
-            today = yyyy + '-' + mm + '-' + dd + 'T00:00:00' ;
-            return today; 
+           day = YYYY + '-' + MM + '-' + DD  ;
+           return day;
            break; 
         }
         case "JSON": {
-           return datatype + ' '  + timetype + ' ' +  timetypemin + ' ' + timetypemax ;
-           break; 
+           day = YYYY + '-' + MM + '-' + DD + 'T00:00:00' ;
+           return day;
+		   break; 
         }
-
+        case "JSONTIME": {
+		   hh = String(Math.floor( Math.random() * 23 )).padStart(2, '0'); 	
+		   mm = String(Math.floor( Math.random() * 59 )).padStart(2, '0'); 	
+		   ss = String(Math.floor( Math.random() * 59 )).padStart(2, '0'); 	
+           day = YYYY + '-' + MM + '-' + DD + 'T'  + hh + ':' + mm + ':' + ss;
+           return day;
+		   break; 
+        }
+        case "LONGDATE": {
+           day = YYYY + '-' + MM + '-' + DD  ;
+           return day;
+		   break; 
+        }
+        case "SHORTDATE": {
+           day = YY + '/' + MM + '/' + DD  ;
+           return day;
+		   break; 
+        }
     }        
 
   }
@@ -294,55 +315,56 @@ run (context , datatype , timetype , timetypemin, timetypemax ) {
 
 
 function IBAN (CC){
-var BC = [];
+	var BC = [];
 
-BC = [];
+	BC = [];
 
-switch (CC) {
-  case 'DE': {BC = ['64090100','30120400','37040044' ]; break; }
-  case 'NL': {BC = ['ABNA', 'ABNA', 'ABNA', 'AEGO', 'ASNB' , 'BNPA' , 'INGB' , 'INGB' , 'INGB' , 'KABA', 'WEHY']; break; }
-}
+	switch (CC) {
+	  case 'DE': {BC = ['64090100','30120400','37040044' ]; break; }
+	  case 'NL': {BC = ['ABNA', 'ABNA', 'ABNA', 'AEGO', 'ASNB' , 'BNPA' , 'INGB' , 'INGB' , 'INGB' , 'KABA', 'WEHY']; break; }
+	}
 
-BC = BC[Math.floor(Math.random() * BC.length ) ];
-var elfsum,  DIGITS ;
-bNotOk = true;
-while ( bNotOk ) {
-     elfsum = 0;
-     DIGITS = Math.floor( Math.random() * 999999999) ;
-     for ( var i = 0 ; i < DIGITS.toString().length ; i ++ ) {
-         elfsum += DIGITS.toString().substr(i,1) * (9 - i)  ;
-     }
-     bNotOk = ((elfsum % 11 ) !== 0 );
-}
+	BC = BC[Math.floor(Math.random() * BC.length ) ];
+	var elfsum,  DIGITS ;
+	bNotOk = true;
+	while ( bNotOk ) {
+		 elfsum = 0;
+		 DIGITS = Math.floor( Math.random() * 999999999) ;
+		 for ( var i = 0 ; i < DIGITS.toString().length ; i ++ ) {
+			 elfsum += DIGITS.toString().substr(i,1) * (9 - i)  ;
+		 }
+		 bNotOk = ((elfsum % 11 ) !== 0 );
+	}
 
-DIGITS = '000000000' + DIGITS  ;
-DIGITS = DIGITS.substr(DIGITS.length - 10 );
+	DIGITS = '000000000' + DIGITS  ;
+	DIGITS = DIGITS.substr(DIGITS.length - 10 );
 
-var tmp = ' ';
-var chk = BC + DIGITS + CC ;
-var j = 0; 
-for ( j = 0 ; j < chk.length ; j++ ) {
-   if (chk.substr(j,1) < 65 ) {
-     tmp = tmp + chk.substr(j,1);     
-   }   else   {
-     tmp = tmp +  ( chk.substr(j,1).charCodeAt() - 55 )  ; 
-   }
-}
-tmp += '00';
+	var tmp = ' ';
+	var chk = BC + DIGITS + CC ;
+	var j = 0; 
+	for ( j = 0 ; j < chk.length ; j++ ) {
+	   if (chk.substr(j,1) < 65 ) {
+		 tmp = tmp + chk.substr(j,1);     
+	   }   else   {
+		 tmp = tmp +  ( chk.substr(j,1).charCodeAt() - 55 )  ; 
+	   }
+	}
+	tmp += '00';
 
-var tmp2 = '';
-var  r;
-for ( i=0; i< tmp.length ; i++) {
-    tmp2 += tmp.charAt( i);
-    r = tmp2 % 97;
-    tmp2 = r.toString( 10);
-}
+	var tmp2 = '';
+	var  r;
+	for ( i=0; i< tmp.length ; i++) {
+		tmp2 += tmp.charAt( i);
+		r = tmp2 % 97;
+		tmp2 = r.toString( 10);
+	}
 
-tmp =  tmp2 / 1;
-CN = '0' + ( 98 - tmp ) ;
-CN = CN.substr(CN.length - 2 );
+	tmp =  tmp2 / 1;
+	CN = '0' + ( 98 - tmp ) ;
+	CN = CN.substr(CN.length - 2 );
 
-return CC + CN + BC + DIGITS ;
+	return CC + CN + BC + DIGITS ;
+
 }
 
 
