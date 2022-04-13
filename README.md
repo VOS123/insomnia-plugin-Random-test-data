@@ -2,6 +2,8 @@
 Generate random test data 
 features;
 - generate Names (NL)
+- working on 
+ - company names
 - generate random fake IBAN  (NL & DE)
 - generate random addresses (BE,DE & NL)
 - generate random numbers

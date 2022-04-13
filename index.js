@@ -42,28 +42,38 @@ module.exports.templateTags = [
 
 {
   name: 'Naam',    
-  displayName: 'Namen',
-  description: 'Creer willekeurige namen.',        
-  args: [
-  {
-    displayName: 'Namen',
-    type: 'enum',
-    options: [
-      {displayName: 'Voornamen',            value: 'Voornamen'},
-      {displayName: 'Achternamen',          value: 'Achternamen'},
-      {displayName: 'Voor- en achternamen', value: 'Namen'}
-    ]
-  } ,    
-],
+  displayName: 'Names',
+  description: ' this will generate random names.',        
+  args: [	  
+	  {
+			displayName: 'Select your Country',
+			type: 'enum',
+			options: [
+				{displayName: 'BE',                  value: 'BE'},
+				{displayName: 'DE',                  value: 'DE'},
+				{displayName: 'NL',                  value: 'NL'},
+			]
+	  } , 
+	  {
+		displayName: 'Namen',
+		type: 'enum',
+		options: [
+		  {displayName: 'First name',           value: 'firstName'},
+		  {displayName: 'Surname ',             value: 'surName'},
+		  {displayName: 'First name + surname', value: 'Name'},
+		  {displayName: 'Company names',        value: 'companyName'},	
+		]
+	  } ,    
+  ],
 
-run (context , datatype  ) {
-  
-  switch (datatype) {
-    case 'Voornamen':      return firstName();
-    case 'Achternamen':    return surName();
-    case 'Namen':          return Name();
-    default:               return 'Error - incorrect, or non-existing value selected ';
-  }
+  run (context , country, name  ) {  
+	  switch (name) {
+		case 'firstName':     return firstName(country);
+		case 'surName':       return surName(country);
+		case 'Name':          return Name(country);
+		case 'companyName':   return companyName(country);	  
+		default:              return 'Sorry (' +  name + ') not -yet- supported.';
+	  }
   }
 
 } ,
@@ -314,58 +324,7 @@ run (context , datatype , timetype , timemin, timemax ) {
 
 
 
-function IBAN (CC){
-	var BC = [];
 
-	BC = [];
-
-	switch (CC) {
-	  case 'DE': {BC = ['64090100','30120400','37040044' ]; break; }
-	  case 'NL': {BC = ['ABNA', 'ABNA', 'ABNA', 'AEGO', 'ASNB' , 'BNPA' , 'INGB' , 'INGB' , 'INGB' , 'KABA', 'WEHY']; break; }
-	}
-
-	BC = BC[Math.floor(Math.random() * BC.length ) ];
-	var elfsum,  DIGITS ;
-	bNotOk = true;
-	while ( bNotOk ) {
-		 elfsum = 0;
-		 DIGITS = Math.floor( Math.random() * 999999999) ;
-		 for ( var i = 0 ; i < DIGITS.toString().length ; i ++ ) {
-			 elfsum += DIGITS.toString().substr(i,1) * (9 - i)  ;
-		 }
-		 bNotOk = ((elfsum % 11 ) !== 0 );
-	}
-
-	DIGITS = '000000000' + DIGITS  ;
-	DIGITS = DIGITS.substr(DIGITS.length - 10 );
-
-	var tmp = ' ';
-	var chk = BC + DIGITS + CC ;
-	var j = 0; 
-	for ( j = 0 ; j < chk.length ; j++ ) {
-	   if (chk.substr(j,1) < 65 ) {
-		 tmp = tmp + chk.substr(j,1);     
-	   }   else   {
-		 tmp = tmp +  ( chk.substr(j,1).charCodeAt() - 55 )  ; 
-	   }
-	}
-	tmp += '00';
-
-	var tmp2 = '';
-	var  r;
-	for ( i=0; i< tmp.length ; i++) {
-		tmp2 += tmp.charAt( i);
-		r = tmp2 % 97;
-		tmp2 = r.toString( 10);
-	}
-
-	tmp =  tmp2 / 1;
-	CN = '0' + ( 98 - tmp ) ;
-	CN = CN.substr(CN.length - 2 );
-
-	return CC + CN + BC + DIGITS ;
-
-}
 
 
 function RandomChooseItem(soort) {
@@ -467,8 +426,8 @@ function Place (country) {
 function LorumIpsum (maxlength)  {
       Words = ['mauris','iaculis','felis','purus', 'et','varius','lectus','tempus','sed','non','semper','mi','ac','porta','augue','ondimentum','purus','ut','urna', 
                'pulvinar','magna','euismod','posuere','ante','in','quam','laoreet','placerat','labitur',  'feugiat',  'civibus', 'platonem', 'consequuntur',  'vix',  'ei',  
-               'mauris' ,'dapibus', 'pulvinar','porta', 'aliquam', 'hendrerit', 'mauris','viverra', 'tincidunt', 'interdum', 'dui', 'libero' ,'luctus' , 'dui'
-               ,'sagittis', 'varius' , ', est' , 'augue' , ', et', ', in'
+               'mauris' ,'dapibus', 'pulvinar','porta', 'aliquam', 'hendrerit', 'mauris','viverra', 'tincidunt', 'interdum', 'dui', 'libero' ,'luctus' , 'dui',
+			   'dongus','retina','roceni','argentie','wolenturi','sagittis', 'varius' , ', est' , 'augue' , ', et', ', in'
                ];
                
       PunctuationMarks = [' ',' ',' ',' ',' ',' ',' ',' ',' ',', ',', '];
@@ -623,7 +582,6 @@ function ScrambleUniCode (type,maxlength) {
     }	
     var UC = '';
 	for ( i = 0;  i < maxlength ; i++ ) {
-       /* UC += String.fromCodePoint( start + Math.floor(Math.random() *  eind )) ; */
 		UC += String.fromCodePoint( start + ( Math.floor( Math.random() *  eind )))  ;
 	}
 	return UC ;
@@ -634,38 +592,35 @@ function ScrambleUniCode (type,maxlength) {
 function Address (country, Soort){
  switch (country) {	
 	 case 'NL': {
-		var Names = ['Appelboom','Beukenboom','Berkenboom','Dennenboom','Iep','Eikenboom','Kastanjeboom','Kersenboom','Perenboom', 'Wilg','Cypres','Ceder',
-				  'Appelboom','Beukenboom','Berkenboom','Dennenboom','Iep','Eikenboom','Kastanjeboom','Kersenboom','Perenboom', 'Wilg','Cypres','Ceder',
-				  'Appelboom','Beukenboom','Berkenboom','Dennenboom','Iep','Eikenboom','Kastanjeboom','Kersenboom','Perenboom', 'Wilg','Cypres','Ceder',
-				  'Anjer', 'Margriet', 'Rozen','Sneeuwklokjes','Tulpen','Vergeetmeniet','Zonnenbloem',
-				  'Anjer', 'Margriet', 'Rozen','Sneeuwklokjes','Tulpen','Vergeetmeniet','Zonnenbloem',
-				  'Anjer', 'Margriet', 'Rozen','Sneeuwklokjes','Tulpen','Vergeetmeniet','Zonnenbloem',
-				  'Jupiter', 'Mercurius','Maan', 'Mars', 'Saturnus', 'Uranus', 'Venus' , 'Zon',
-				  'Jupiter', 'Mercurius','Maan', 'Mars', 'Saturnus', 'Uranus', 'Venus' , 'Zon',
-				  'Jupiter', 'Mercurius','Maan', 'Mars', 'Saturnus', 'Uranus', 'Venus' , 'Zon',
-				  'Einstein','Edison','Tesla','Newton','Celcius','Kelvin','Pasteur','Arieh Warshel ','Michael Levitt ','Daniel Shechtman ','Ada Yonath ',
-				  'Aaron Ciechanover ','Avram Hershko ','Yitzchak Rabin ','Shimon Peres ','Menachem Begin','Sjmoeël Joseef Agnon',
-				  'Gerard Aafjes','Carlos Aalbers','Gert Aandewiel','Patrick van Aanholt','Henny van der Aar','Kees Aarts','Christopher van der Aat',
-				  'Martijn Abbenhues','Martin Abbenhuis','Yassine Abdellaoui','David Abdul','Liban Abdulahi','Dirk Abels','Gert Abma','Johan Abma',
-				  'Anass Achahbar','Rochdi Achenteh','Eddy Achterberg','Giorgio Achterberg','John Achterberg','Elton Acolatse','Law Adam','Marcel Adam'
-				  ,'Michel Adam','Michiel Adams','Johan Adang','Cor Adelaar','Frans Adelaar','Erik van Adelberg','Co Adriaanse','Dick Advocaat','Romeo van Aerde'
-				  ,'Berry van Aerle','Jos van Aerts','Maikel Aerts','Ibrahim Afellay','Kemy Agustien','Achmed Ahahaoui','Alami Ahannach','Soufyan Ahannach','Bert Aipassa',
-				  'Ismaïl Aissati','Nathan Aké','Joost van Aken','Marcel Akerboom','Jan van de Akker','Sofian Akouili','Fahd Aktaou','Furkan Alakmak','Tony Alberda',
-				  'Suently Alberto','René Alberts','Quentin Albertus','Norbert Alblas','Roland Alberg','Suently Alberto','Rob Alflen','Shapoul Ali','Adnan Alisic','Mohammed Allach',
-				  'Quincy Allée','Frans Alma','Pier Alma','Anmar Almubaraki','Marco van Alphen','Jim van Alst','Jeffrey Altheer','Samir Amari','Pelle van Amersfoort','Mawouna Amevor',
-				  'Mustafa Amezrine','Carlo lAmi','Ahmed Ammi','Nordin Amrabat','Sofyan Amrabat','Zakaria Amrani','Wim Anderiesen','Djavan Anderson','Kenny Anderson','Aad Andriessen',
-				  'Ype Anema','Henk Angenent','Vurnon Anita','Pelé van Anholt','Edwin van Ankeren','Jarchinio Antonia','Geraldo António','Rodney Antwi','Soufiane Aouragh','Mitch Apau',
-				  'Bram Appel','Menno van Appelen','Henk den Arend','Berry Arends','Richard Arends','Yener Arıca','Ceylan Arikan','Willem van der Ark','Philippe van Arnhem','Peter Arntz',
-				  'Sjoerd Ars','Masies Artien','Alfons Arts','Arno Arts','Jan Artz','Wouter Artz','Hans van Arum','Jeffrey van As','Deniz Aslan','Elroy Asmus','Oussama Assaidi','Abdes Assouiki',
-				  'Kevin van Assouw','Maarten Atmodikoro','Raymond Atteveld','Adil Auassar','Pascal Averdijk','Berthil ter Avest','Hidde ter Avest','Patrick Ax','Yassin Ayoub','Yassine Azzagari',
-				  'Stefan Aartsen','Carolyn Adel','Jasper Aerents','Robin van Aggele','Triin Aljand','Franziska van Almsick','Jopie van Alphen','Therese Alshammar','Irina Amsjennikova','Greta Andersen'
-				  ,'Mayumi Aoki','Duncan Armstrong','Örn Arnarson','Eva Arndt','Isabelle Arnould','Pär Arvidsson','Alia Atkinson','Garnet Ault',
-				  'Sade Daal','Alexander Dale Oen','Gijs Damen','José Damen','Eszter Dara','Tamás Darnyi','Uwe Daßler','Frédérik Deburghgraeve','Joseph De Combe',
-				  'Brendon Dedekind','Gé Dekker','Inge Dekker','Lia Dekker','Ron Dekker','Dieter Dekoninck','Rick DeMont','Stijn Depypere','Gilles De Wilde','Stefan de Die',
-				  'Nelson Diebel','Ines Diers','Edith van Dijk','Tom Dolan','Duje Draganja','Dion Dreesens','Elt Drenth','Nick Driebergen','Frank Drost','Johannes Drost','Monique Drost',
-				  'Peter Drost','Fabienne Dufour','Jason Dunford','Matthew Dunn','Nate Dusing','Patrick Dybiona','Marjolein Delno','Caeleb Dressel'
-				  ];
-		var Types = ['laan', 'plein', 'straat' , 'straat'];
+		var Names = [ 'Einstein','Edison','Tesla','Newton','Celcius','Kelvin','Pasteur','Arieh Warshel ','Michael Levitt ','Daniel Shechtman ','Ada Yonath ',
+					  'Aaron Ciechanover ','Avram Hershko ','Yitzchak Rabin ','Shimon Peres ','Menachem Begin','Sjmoeël Joseef Agnon',
+					  'Gerard Aafjes','Carlos Aalbers','Gert Aandewiel','Patrick van Aanholt','Henny van der Aar','Kees Aarts','Christopher van der Aat',
+					  'Martijn Abbenhues','Martin Abbenhuis','Yassine Abdellaoui','David Abdul','Liban Abdulahi','Dirk Abels','Gert Abma','Johan Abma',
+					  'Anass Achahbar','Rochdi Achenteh','Eddy Achterberg','Giorgio Achterberg','John Achterberg','Elton Acolatse','Law Adam','Marcel Adam'
+					  ,'Michel Adam','Michiel Adams','Johan Adang','Cor Adelaar','Frans Adelaar','Erik van Adelberg','Co Adriaanse','Dick Advocaat','Romeo van Aerde'
+					  ,'Berry van Aerle','Jos van Aerts','Maikel Aerts','Ibrahim Afellay','Kemy Agustien','Achmed Ahahaoui','Alami Ahannach','Soufyan Ahannach','Bert Aipassa',
+					  'Ismaïl Aissati','Nathan Aké','Joost van Aken','Marcel Akerboom','Jan van de Akker','Sofian Akouili','Fahd Aktaou','Furkan Alakmak','Tony Alberda',
+					  'Suently Alberto','René Alberts','Quentin Albertus','Norbert Alblas','Roland Alberg','Suently Alberto','Rob Alflen','Shapoul Ali','Adnan Alisic','Mohammed Allach',
+					  'Quincy Allée','Frans Alma','Pier Alma','Anmar Almubaraki','Marco van Alphen','Jim van Alst','Jeffrey Altheer','Samir Amari','Pelle van Amersfoort','Mawouna Amevor',
+					  'Mustafa Amezrine','Carlo lAmi','Ahmed Ammi','Nordin Amrabat','Sofyan Amrabat','Zakaria Amrani','Wim Anderiesen','Djavan Anderson','Kenny Anderson','Aad Andriessen',
+					  'Ype Anema','Henk Angenent','Vurnon Anita','Pelé van Anholt','Edwin van Ankeren','Jarchinio Antonia','Geraldo António','Rodney Antwi','Soufiane Aouragh','Mitch Apau',
+					  'Bram Appel','Menno van Appelen','Henk den Arend','Berry Arends','Richard Arends','Yener Arıca','Ceylan Arikan','Willem van der Ark','Philippe van Arnhem','Peter Arntz',
+					  'Sjoerd Ars','Masies Artien','Alfons Arts','Arno Arts','Jan Artz','Wouter Artz','Hans van Arum','Jeffrey van As','Deniz Aslan','Elroy Asmus','Oussama Assaidi','Abdes Assouiki',
+					  'Kevin van Assouw','Maarten Atmodikoro','Raymond Atteveld','Adil Auassar','Pascal Averdijk','Berthil ter Avest','Hidde ter Avest','Patrick Ax','Yassin Ayoub','Yassine Azzagari',
+					  'Stefan Aartsen','Carolyn Adel','Jasper Aerents','Robin van Aggele','Triin Aljand','Franziska van Almsick','Jopie van Alphen','Therese Alshammar','Irina Amsjennikova','Greta Andersen'
+					  ,'Mayumi Aoki','Duncan Armstrong','Örn Arnarson','Eva Arndt','Isabelle Arnould','Pär Arvidsson','Alia Atkinson','Garnet Ault',
+					  'Sade Daal','Alexander Dale Oen','Gijs Damen','José Damen','Eszter Dara','Tamás Darnyi','Uwe Daßler','Frédérik Deburghgraeve','Joseph De Combe',
+					  'Brendon Dedekind','Gé Dekker','Inge Dekker','Lia Dekker','Ron Dekker','Dieter Dekoninck','Rick DeMont','Stijn Depypere','Gilles De Wilde','Stefan de Die',
+					  'Nelson Diebel','Ines Diers','Edith van Dijk','Tom Dolan','Duje Draganja','Dion Dreesens','Elt Drenth','Nick Driebergen','Frank Drost','Johannes Drost','Monique Drost',
+					  'Peter Drost','Fabienne Dufour','Jason Dunford','Matthew Dunn','Nate Dusing','Patrick Dybiona','Marjolein Delno','Caeleb Dressel'
+	    ];
+		for ( i = 1; i < 10 ; i ++ ) {  
+		   Names.push (	'Appelboom','Beukenboom','Berkenboom','Dennenboom','Iep','Eikenboom','Kastanjeboom','Kersenboom','Perenboom', 'Wilg','Cypres','Ceder',
+				        'Anjer', 'Margriet', 'Rozen','Sneeuwklokjes','Tulpen','Vergeetmeniet','Zonnenbloem',
+					    'Jupiter', 'Mercurius','Maan', 'Mars', 'Saturnus', 'Uranus', 'Venus' , 'Zon'
+					  );
+	    }  
+		var Types = ['laan','plein','plein',' steeg','straat','straat','straat','straat','weg'];
 
 		var Name = Names[Math.floor(Math.random() * Names.length )] ;
 		var Type = Types[Math.floor(Math.random() * Types.length )] ;
@@ -685,6 +640,26 @@ function Address (country, Soort){
   }
 }
 
+function companyName (country){
+ switch (country) {	
+	 case 'NL': {
+		var namePart1, namePart2, companyNames = [];
+		namePart1.push ('Dakbedekking','Glasverzekering');
+		namePart2.push ('Jansen','Peters');
+		 
+		companyNames.push ('Jansen & Jansen','Star','Topdesk','Topgun','Toppunt','Topsport');
+		var Sufixes = [ '','','',' & zonen',' & zoon','BV','NV'];
+		var companyName =  companyNames[Math.floor(Math.random() * companyNames.length )] ;
+		var Sufix = Sufixes[Math.floor(Math.random() * Sufixes.length )] ;
+		return companyName + ' ' + Sufix  ; 
+	    break;  
+	}	 
+	default: {
+		return 'Country (' + country + ') not yet supported.';
+		break;
+	} 	 
+  }
+}
 
  function Housenumber (country){
   
@@ -710,30 +685,108 @@ function Postalcode (country){
 }
 
 
-function firstName(){
-  var FN = ['Mark','Charles','Wiliam','George','Jack','James','H.C.','Isaac','Edgar Ellan' ,'Fjoder','Lev','Aleksander','Heinrich','Franz','Aleksandr','Remco','Anton','Umberto','Leon','Ray',
-            'Sade','Alexander','Gijs','José','Eszter','Tamás','Uwe','Frédérik','Joseph',
-            'Brendon','Gé','Inge','Lia','Ron','Dieter','Rick','Stijn','Gilles','Stefan',
-            'Nelson','Ines','Edith','Tom','Duje','Dion','Elt','Nick','Frank','Johannes','Monique',
-            'Peter','Fabienne','Jason','Matthew','Nate','Patrick','Marjolein','Caeleb'
-           ];
-  return  FN[Math.floor( FN.length * Math.random ())] ;
+function firstName(country){
+  switch ( country) {
+     case 'NL': {
+	   var FN = ['Mark','Charles','Wiliam','George','Jack','James','H.C.','Isaac','Edgar Ellan' ,'Fjoder','Lev','Aleksander','Heinrich','Franz','Aleksandr','Remco','Anton','Umberto','Leon','Ray',
+         'Sade','Alexander','Gijs','José','Eszter','Tamás','Uwe','Frédérik','Joseph','Brendon','Gé','Inge','Lia','Ron','Dieter','Rick','Stijn','Gilles','Stefan',
+         'Nelson','Ines','Edith','Tom','Duje','Dion','Elt','Nick','Frank','Johannes','Monique','Peter','Fabienne','Jason','Matthew','Nate','Patrick','Marjolein','Caeleb'
+       ];
+       for ( i = 1; i < 10 ; i ++ ) {  
+		   FN.push ('Andre','Daan','Flip','Harry','Jan','Kees','Klaas','Levi','Luuk','Noah','Piet','Rene','Sem','Theo','Toon', 'Willem','Wouter');
+		   FN.push ('Anja','Annie','Bep','Carla','Emma','Maria','Marion','Monique','Petra','Saar','Sophie','Tes','Truus','Trudy','Vera','Yara','Zoë');
+	   } 
+       return  FN[Math.floor( FN.length * Math.random ())] ;
+    }	  
+	default: {
+	    return 'Country (' + country + ') not yet supported.';		
+		break;
+	}
+  }		  
 }
 
-function surName(){
-  var LN = ['Twain','Dickens','Shakespear','Orwell','Vance','Baldwin','Wells','Asimov','Poe','Tolstoj','Poeskin','Böll','Kafka','Solzhenitsyn','Campert','Tjechov','Eco','de Winter','Kurzweil',
-            'Daal','Dale Oen','Damen','Damen','Dara','Darnyi','Daßler','Deburghgraeve','de Combe',
-            'Dedekind','Dekker','Dekoninck','DeMont','Depypere','De Wilde','Die',
-            'Diebel','Diers','van Dijk','Dolan','Draganja','Dreesens','Drenth','Driebergen','Drost','Drost',
-            'Dufour','Dunford','Dunn','Dusing','Dybiona','Delno','Dressel' 
-          ];
-  return  LN[Math.floor( LN.length * Math.random ())] ;
+function surName(country){
+  switch ( country) {
+     case 'NL': {
+	  var LN = ['Twain','Dickens','Shakespear','Orwell','Vance','Baldwin','Wells','Asimov','Poe','Tolstoj','Poeskin','Böll','Kafka','Solzhenitsyn','Campert','Tjechov','Eco','de Winter','Kurzweil',
+				'Daal','Dale Oen','Damen','Damen','Dara','Darnyi','Daßler','Deburghgraeve','de Combe','Dedekind','Dekker','Dekoninck','DeMont','Depypere','De Wilde','Die',
+				'Diebel','Diers','van Dijk','Dolan','Draganja','Dreesens','Drenth','Driebergen','Drost','Drost','Dufour','Dunford','Dunn','Dusing','Dybiona','Delno','Dressel' 
+	   ];
+       for ( i = 1; i < 10 ; i ++ ) {  
+		   LN.push ('Berendsen','de Vos','de Vries','Jansen','Peters','van Leeuwen','Willemsen');
+	   } 
+       return  LN[Math.floor( LN.length * Math.random ())] ;
+    }	  
+	default: {
+	    return 'Country (' + country + ') not yet supported.';		
+		break;
+	}
+  }
 }
 
-function Name(){
-  return  firstName() + ' ' + surName()  ;
+function Name(country){
+  switch ( country) {
+     case 'NL': {
+       return  firstName(country) + ' ' + surName(country)  ;
+     }	  
+	 default: {
+	    return 'Country (' + country + ') not yet supported.';		
+		break;
+	}
+  }
 }
 
+function IBAN (CC){
+	var BC = [];
 
+	BC = [];
+
+	switch (CC) {
+	  case 'DE': {BC = ['64090100','30120400','37040044' ]; break; }
+	  case 'NL': {BC = ['ABNA', 'ABNA', 'ABNA', 'AEGO', 'ASNB' , 'BNPA' , 'INGB' , 'INGB' , 'INGB' , 'KABA', 'WEHY']; break; }
+	}
+
+	BC = BC[Math.floor(Math.random() * BC.length ) ];
+	var elfsum,  DIGITS ;
+	bNotOk = true;
+	while ( bNotOk ) {
+		 elfsum = 0;
+		 DIGITS = Math.floor( Math.random() * 999999999) ;
+		 for ( var i = 0 ; i < DIGITS.toString().length ; i ++ ) {
+			 elfsum += DIGITS.toString().substr(i,1) * (9 - i)  ;
+		 }
+		 bNotOk = ((elfsum % 11 ) !== 0 );
+	}
+
+	DIGITS = '000000000' + DIGITS  ;
+	DIGITS = DIGITS.substr(DIGITS.length - 10 );
+
+	var tmp = ' ';
+	var chk = BC + DIGITS + CC ;
+	var j = 0; 
+	for ( j = 0 ; j < chk.length ; j++ ) {
+	   if (chk.substr(j,1) < 65 ) {
+		 tmp = tmp + chk.substr(j,1);     
+	   }   else   {
+		 tmp = tmp +  ( chk.substr(j,1).charCodeAt() - 55 )  ; 
+	   }
+	}
+	tmp += '00';
+
+	var tmp2 = '';
+	var  r;
+	for ( i=0; i< tmp.length ; i++) {
+		tmp2 += tmp.charAt( i);
+		r = tmp2 % 97;
+		tmp2 = r.toString( 10);
+	}
+
+	tmp =  tmp2 / 1;
+	CN = '0' + ( 98 - tmp ) ;
+	CN = CN.substr(CN.length - 2 );
+
+	return CC + CN + BC + DIGITS ;
+
+}
 
 
