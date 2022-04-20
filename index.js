@@ -648,12 +648,18 @@ function companyName (country){
 
 	switch (country) {	
 	 case 'NL': {		 
-        type = ['fancy','fastfoodketens','familie'];	     
+        type = ['landelijk','fancy','fastfoodketens','familie'];	     
 		type = type[Math.floor(Math.random() * type.length )]
 		switch (type) {  
+		 case 'landelijk': { 
+				namePart1.push ('Evers','de Vries','Barends','Harm`s','Gerts','Jansen');
+				namePart2.push ('boerderij','rijwielhandel','geitenhouders','hoeve','molen','kwekerij','varkenshouderij');
+				return  namePart1[Math.floor(Math.random() * namePart1.length )] + ' ' + namePart2[Math.floor(Math.random() * namePart2.length )]   ; 
+				break;  
+		 }	 
 		 case 'fancy': { 
-				namePart1.push ('Star','Flexible','Future','Reliable','Top');
-				namePart2.push ('systems','decoration','gardens' );
+				namePart1.push ('Amazing','Star','Flexible','Future','Reliable','Top');
+				namePart2.push ('achitecture','decoration','design','designers','gardens','systems' );
 				namePart3.push ('NV','BV','BV','BV', 'B.V.','& zoon', '& zonen'  );
 				for (i = 0 ; i < 10 ; i++ ) namePart3.push ('' );
 
@@ -662,7 +668,7 @@ function companyName (country){
 		 }	 
 		 case 'familie': { 
 				namePart1.push ('Bakker','de Jong','Derks','Geurts','Hendriks', 'Jansen','Janssen','Jansens','Janssens','Peters','Smit','van Dijk', 'Verhoeven','Visser','Vissers','Willems');
-				namePart2.push ('beveiliging', 'catering', 'dakbedekking','glasverzekering','keukens','sierbestrating','transport','zwembadonderhoud' );
+				namePart2.push ('beveiliging', 'catering', 'dakbedekking','glasverzekering','keukens','onderhoud','reclame','reparatie','sierbestrating','transport','zwembadonderhoud' );
 				namePart3.push ('NV','BV','BV','BV', 'B.V.','& zoon', '& zonen'  );
 				for (i = 0 ; i < 10 ; i++ ) namePart3.push ('' );
 
@@ -671,8 +677,8 @@ function companyName (country){
 		 }	 
 		 case 'fastfoodketens': { 
 				namePart1.push ('Burger King' ,'Carls jr', 'Chick & Cheez','Culver`s', 'DQ' , 'Five Guys' , 'Hard Rock Café','In-N-Out', 'Jack in the box' , 'Red Robin' ,'Sonic' ,'Smash Burger', 'Steak ’n Shake', 'McDonald`s', 'Wendy`s' , 'Whataburger');
-				namePart1.push ('Domino`s Pizza.','Papa John`s Pizza.','Pizzahut');
-			    namePart1.push ('Kentucky Fried Chicken');
+			    namePart1.push ('Broodje van Kootje','De Beren','Johnny Rockets','Kentucky Fried Chicken','Long John Silver`s','Taco Bel','Wimpy','Wok to Walk');
+				namePart1.push ('Domino`s Pizza.','Dunkin Donuts','New York Pizza','Papa John`s Pizza.','Pizzahut','Popeyes');
 				return  namePart1[Math.floor(Math.random() * namePart1.length )]  ; 
 				break;  
 		 }	 
