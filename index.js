@@ -636,23 +636,52 @@ function Address (country, Soort){
 	default: {
 		return 'Country (' + country + ') not yet supported.';
 		break;
-	} 	 
+	} 	  
   }
 }
 
 function companyName (country){
- switch (country) {	
-	 case 'NL': {
-		var namePart1, namePart2, companyNames = [];
-		namePart1.push ('Dakbedekking','Glasverzekering');
-		namePart2.push ('Jansen','Peters');
-		 
-		companyNames.push ('Jansen & Jansen','Star','Topdesk','Topgun','Toppunt','Topsport');
-		var Sufixes = [ '','','',' & zonen',' & zoon','BV','NV'];
-		var companyName =  companyNames[Math.floor(Math.random() * companyNames.length )] ;
-		var Sufix = Sufixes[Math.floor(Math.random() * Sufixes.length )] ;
-		return companyName + ' ' + Sufix  ; 
-	    break;  
+	 var namePart1 = [];
+     var namePart2 = [];
+     var namePart3 = [];
+	 var type = [];
+
+	switch (country) {	
+	 case 'NL': {		 
+        type = ['fancy','fastfoodketens','familie'];	     
+		type = type[Math.floor(Math.random() * type.length )]
+		switch (type) {  
+		 case 'fancy': { 
+				namePart1.push ('Star','Flexible','Future','Reliable','Top');
+				namePart2.push ('systems','decoration','gardens' );
+				namePart3.push ('NV','BV','BV','BV', 'B.V.','& zoon', '& zonen'  );
+				for (i = 0 ; i < 10 ; i++ ) namePart3.push ('' );
+
+				return  namePart1[Math.floor(Math.random() * namePart1.length )] + ' ' + namePart2[Math.floor(Math.random() * namePart2.length )]  + ' ' + namePart3[Math.floor(Math.random() * namePart3.length )] ; 
+				break;  
+		 }	 
+		 case 'familie': { 
+				namePart1.push ('Bakker','de Jong','Derks','Geurts','Hendriks', 'Jansen','Janssen','Jansens','Janssens','Peters','Smit','van Dijk', 'Verhoeven','Visser','Vissers','Willems');
+				namePart2.push ('beveiliging', 'catering', 'dakbedekking','glasverzekering','keukens','sierbestrating','transport','zwembadonderhoud' );
+				namePart3.push ('NV','BV','BV','BV', 'B.V.','& zoon', '& zonen'  );
+				for (i = 0 ; i < 10 ; i++ ) namePart3.push ('' );
+
+				return  namePart1[Math.floor(Math.random() * namePart1.length )] + ' ' + namePart2[Math.floor(Math.random() * namePart2.length )]  + ' ' + namePart3[Math.floor(Math.random() * namePart3.length )] ; 
+				break;  
+		 }	 
+		 case 'fastfoodketens': { 
+				namePart1.push ('Burger King' ,'Carls jr', 'Chick & Cheez','Culver`s', 'DQ' , 'Five Guys' , 'Hard Rock Café','In-N-Out', 'Jack in the box' , 'Red Robin' ,'Sonic' ,'Smash Burger', 'Steak ’n Shake', 'McDonald`s', 'Wendy`s' , 'Whataburger');
+				namePart1.push ('Domino`s Pizza.','Papa John`s Pizza.','Pizzahut');
+			    namePart1.push ('Kentucky Fried Chicken');
+				return  namePart1[Math.floor(Math.random() * namePart1.length )]  ; 
+				break;  
+		 }	 
+		 default : { 
+			return 'Type (' + type + ') not yet supported for country (' + country + ').';
+			break;
+		 }
+				
+		}
 	}	 
 	default: {
 		return 'Country (' + country + ') not yet supported.';
